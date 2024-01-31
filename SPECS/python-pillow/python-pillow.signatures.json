@@ -1,0 +1,6 @@
+{
+ "Signatures": {
+  "Pillow-10.2.0.tar.gz": "fe695f6fa8bbc341b9044b6553a32d84cf6d6ea0de104396aece85e454c7cbc2",
+  "pillow_mingw.patch": "9f8bb2040f9b197893ca09d9bf34ef6a6c21e944d6b60689a9ad4fff9cd94a39"
+ }
+}

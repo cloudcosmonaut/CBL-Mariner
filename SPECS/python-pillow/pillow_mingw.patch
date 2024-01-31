@@ -1,0 +1,78 @@
+diff -rupN --no-dereference Pillow-10.2.0/setup.py Pillow-10.2.0-new/setup.py
+--- Pillow-10.2.0/setup.py	2024-01-02 08:32:31.000000000 +0100
++++ Pillow-10.2.0-new/setup.py	2024-01-02 12:15:05.515971997 +0100
+@@ -137,7 +137,7 @@ class RequiredDependencyException(Except
+     pass
+ 
+ 
+-PLATFORM_MINGW = os.name == "nt" and "GCC" in sys.version
++PLATFORM_MINGW = "mingw32" in os.getenv("CC", "")
+ 
+ 
+ def _dbg(s, tp=None):
+@@ -510,7 +510,7 @@ class pil_build_ext(build_ext):
+         #
+         # add platform directories
+ 
+-        if self.disable_platform_guessing:
++        if self.disable_platform_guessing or PLATFORM_MINGW:
+             pass
+ 
+         elif sys.platform == "cygwin":
+@@ -601,7 +601,7 @@ class pil_build_ext(build_ext):
+         # FIXME: check /opt/stuff directories here?
+ 
+         # standard locations
+-        if not self.disable_platform_guessing:
++        if not self.disable_platform_guessing and not PLATFORM_MINGW:
+             _add_directory(library_dirs, "/usr/local/lib")
+             _add_directory(include_dirs, "/usr/local/include")
+ 
+@@ -843,7 +843,7 @@ class pil_build_ext(build_ext):
+         if feature.xcb:
+             libs.append(feature.xcb)
+             defs.append(("HAVE_XCB", None))
+-        if sys.platform == "win32":
++        if sys.platform == "win32" or PLATFORM_MINGW:
+             libs.extend(["kernel32", "user32", "gdi32"])
+         if struct.unpack("h", b"\0\1")[0] == 1:
+             defs.append(("WORDS_BIGENDIAN", None))
+@@ -858,6 +858,8 @@ class pil_build_ext(build_ext):
+         if feature.freetype:
+             srcs = []
+             libs = ["freetype"]
++            if sys.platform == "win32" or PLATFORM_MINGW:
++                libs.extend(["dl"])
+             defs = []
+             if feature.raqm:
+                 if not feature.want_vendor("raqm"):  # using system Raqm
+@@ -880,7 +882,7 @@ class pil_build_ext(build_ext):
+ 
+         if feature.lcms:
+             extra = []
+-            if sys.platform == "win32":
++            if sys.platform == "win32" or PLATFORM_MINGW:
+                 extra.extend(["user32", "gdi32"])
+             self._update_extension("PIL._imagingcms", [feature.lcms] + extra)
+         else:
+@@ -899,7 +901,7 @@ class pil_build_ext(build_ext):
+         else:
+             self._remove_extension("PIL._webp")
+ 
+-        tk_libs = ["psapi"] if sys.platform in ("win32", "cygwin") else []
++        tk_libs = ["psapi"] if sys.platform in ("win32", "cygwin") or PLATFORM_MINGW else []
+         self._update_extension("PIL._imagingtk", tk_libs)
+ 
+         build_ext.build_extensions(self)
+diff -rupN --no-dereference Pillow-10.2.0/src/libImaging/ImPlatform.h Pillow-10.2.0-new/src/libImaging/ImPlatform.h
+--- Pillow-10.2.0/src/libImaging/ImPlatform.h	2024-01-02 08:32:31.000000000 +0100
++++ Pillow-10.2.0-new/src/libImaging/ImPlatform.h	2024-01-02 12:15:05.516972020 +0100
+@@ -28,7 +28,7 @@
+ #if defined(_WIN32) || defined(__CYGWIN__) /* WIN */
+ 
+ #define WIN32_LEAN_AND_MEAN
+-#include <Windows.h>
++#include <windows.h>
+ 
+ #ifdef __CYGWIN__
+ #undef _WIN64
