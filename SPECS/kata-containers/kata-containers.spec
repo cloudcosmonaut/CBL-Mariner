@@ -43,7 +43,7 @@ Release:        10%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 URL:            https://github.com/%{name}/%{name}
-Source0:        https://github.com/%{name}/%{name}/archive/refs/tags/%{version}.tar.gz#/%{name}-cc-%{version}.tar.gz
+Source0:        https://github.com/%{name}/%{name}/archive/refs/tags/%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:        https://github.com/%{name}/%{name}/releases/download/%{version}/%{name}-%{version}-cargo.tar.gz
 Source2:        50-kata
 Source3:        mariner-build-uvm.sh
