@@ -13,7 +13,7 @@ Summary:        Utilities for managing the global file system (GFS2)
 Name:           gfs2-utils
 Version:        3.5.1
 Release:        1%{?dist}
-License:        GPLv2+ AND LGPLv2+
+License:        GPL-2.0-or-later AND LGPL-2.1-or-later
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 URL:            https://pagure.io/gfs2-utils
@@ -30,6 +30,7 @@ BuildRequires:  libtool
 BuildRequires:  libuuid-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  zlib-devel
+BuildRequires:  bzip2-devel
 
 Recommends:     kmod(dlm.ko)
 Recommends:     kmod(gfs2.ko)
@@ -67,8 +68,8 @@ modifying, and correcting inconsistencies in GFS2 file systems.
 %{_sbindir}/gfs2_convert
 %{_sbindir}/gfs2_edit
 %{_sbindir}/tunegfs2
-%{_sbindir}/gfs2_withdraw_helper
 %{_sbindir}/glocktop
+%{_libexecdir}/gfs2_withdraw_helper
 %{_mandir}/man8/*gfs2*
 %{_mandir}/man8/glocktop*
 %{_mandir}/man5/*
@@ -78,6 +79,7 @@ modifying, and correcting inconsistencies in GFS2 file systems.
 * Thu Feb 01 2024 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.1-1
 - Auto-upgrade to 3.5.1.
 - Remove patches.
+- Update license, BuildRequires and file directory.
 
 * Tue Sep 26 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 3.2.0-12
 - Removing 'exit' calls from the '%%check' section.
