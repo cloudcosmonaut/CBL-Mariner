@@ -5,7 +5,7 @@
 Summary:        Generic library for reporting various problems
 Name:           libreport
 Version:        2.13.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -690,6 +690,9 @@ fi
 %endif
 
 %changelog
+* Sat Feb  3 15:20:16 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.13.1-10
+- move from extended to base repo
+
 * Tue Dec 20 2022 Muhammad Falak <mwani@microsoft.com> - 2.13.1-9
 - License verified
 
