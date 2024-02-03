@@ -1,0 +1,33 @@
+From a1e6c95fe6b3eaf558274f5a6234d022b7da4002 Mon Sep 17 00:00:00 2001
+From: David King <amigadave@amigadave.com>
+Date: Thu, 2 Nov 2023 09:10:46 +0000
+Subject: [PATCH] Specify library version more completely
+
+If the library version is not specified, meson installs the shared
+object using only the soversion, and tis causes ldconfig to emit a
+warning that the shared object is not a symlink. Specifying a version
+that matches the project version means that version is used for the
+shared object, and the soversion-named file is then a symilnk to that,
+which is common across other libraries, and avoids the warning from
+ldconfig.
+
+https://bugzilla.redhat.com/show_bug.cgi?id=2247508
+---
+ src/libproxy/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/libproxy/meson.build b/src/libproxy/meson.build
+index 343b645..558719c 100644
+--- a/src/libproxy/meson.build
++++ b/src/libproxy/meson.build
+@@ -29,6 +29,7 @@ libproxy = shared_library(
+   link_args : vflag,
+   link_depends : mapfile,
+   soversion: '1',
++  version: meson.project_version(),
+   install: true,
+   install_rpath: pkglibdir,
+ )
+-- 
+2.41.0
+

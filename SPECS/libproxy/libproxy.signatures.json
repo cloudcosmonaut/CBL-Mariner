@@ -1,6 +1,6 @@
 {
  "Signatures": {
-  "libproxy-0.4.17.tar.gz": "88c624711412665515e2800a7e564aabb5b3ee781b9820eca9168035b0de60a9",
-  "proxy.1": "e53e8d6872d707b8a50994976c7e2502d3a104d677db57210592afd459047497"
+  "0.5.3.tar.gz": "0d8d8e4dd96239ba173c2b18905c0bb6e161fd5000e1e0aeace16f754e9a9108",
+  "libproxy-0.5.3-library-version-symlink.patch": "544b0d9a505c3b12c6c332debf72ebf0b00ac3d5e2ad1c185ac121f5eed9452e"
  }
 }
