@@ -1,120 +1,262 @@
+# Always build out-of-source
+%define __cmake_in_source_build 1
+
+# default dependencies
+%global hawkey_version 0.71.1
+%global libcomps_version 0.1.8
+%global libmodulemd_version 2.9.3
+%global rpm_version 4.14.0
+
+# conflicts
+%global conflicts_dnf_plugins_core_version 4.0.26
+%global conflicts_dnf_plugins_extras_version 4.0.4
+%global conflicts_dnfdaemon_version 0.3.19
+
+%bcond dnf5_obsoletes_dnf 0
+
+
+# YUM compat subpackage configuration
+#
+# level=full    -> deploy all compat symlinks (conflicts with yum < 4)
+# level=minimal -> deploy a subset of compat symlinks only
+#                  (no conflict with yum >= 3.4.3-505)*
+# level=preview -> minimal level with altered paths (no conflict with yum < 4)
+# *release 505 renamed /usr/bin/yum to /usr/bin/yum-deprecated
+%global yum_compat_level full
+%global yum_subpackage_name yum
+
+# paths
 %global confdir %{_sysconfdir}/%{name}
+%global pluginconfpath %{confdir}/plugins
+
 %global py3pluginpath %{python3_sitelib}/%{name}-plugins
-Summary:        Python 3 version of the DNF package manager.
+
+# Use the same directory of the main package for subpackage licence and docs
+%global _docdir_fmt %{name}
+
+
+%global pkg_summary     Package manager
+%global pkg_description Utility that allows users to manage packages on their systems. \
+It supports RPMs, modules and comps groups & environments.
+
 Name:           dnf
-Version:        4.8.0
+Version:        4.18.2
 Release:        2%{?dist}
-License:        GPLv2+ OR GPL
+Summary:        %{pkg_summary}
+# For a breakdown of the licensing, see PACKAGE-LICENSING
+License:        GPL-2.0-or-later AND GPL-1.0-only
 Vendor:         Microsoft Corporation
-Distribution:   Mariner
+Distribution:   Azure Linux
 URL:            https://github.com/rpm-software-management/dnf
-#Source0:       %{url}/archive/%{version}.tar.gz
-Source0:        %{name}-%{version}.tar.gz
-BuildRequires:  bash-completion
+Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Patch0:         0001-Revert-Does-not-print-Verify-package-RhBug-1908253.patch
+BuildArch:      noarch
 BuildRequires:  cmake
 BuildRequires:  gettext
-BuildRequires:  python3-sphinx
+# Documentation
 BuildRequires:  systemd
-Requires:       python3
-Requires:       python3-%{name}
-BuildArch:      noarch
+BuildRequires:  bash-completion
+BuildRequires:  %{_bindir}/sphinx-build-3
+Requires:       python3-%{name} = %{version}-%{release}
+Recommends:     (python3-dbus if NetworkManager)
+Conflicts:      python3-dnf-plugins-core < %{conflicts_dnf_plugins_core_version}
+Conflicts:      python3-dnf-plugins-extras-common < %{conflicts_dnf_plugins_extras_version}
 
 %description
-DNF is a tool for managing RPM packages and communicating with Yum repositories.
+%{pkg_description}
 
 %package data
 Summary:        Common data and configuration files for DNF
+Requires:       libreport-filesystem
+%if %{with dnf5_obsoletes_dnf}
+Requires:       /etc/dnf/dnf.conf
+%endif
+Obsoletes:      %{name}-conf <= %{version}-%{release}
+Provides:       %{name}-conf = %{version}-%{release}
 
 %description data
-DNF's data and configuration files
+Common data and configuration files for DNF
+
+%package -n %{yum_subpackage_name}
+Requires:       %{name} = %{version}-%{release}
+Summary:        %{pkg_summary}
+
+Provides:       %{name}-yum = %{version}-%{release}
+Obsoletes:      %{name}-yum < 5
+
+%description -n %{yum_subpackage_name}
+%{pkg_description}
 
 %package -n python3-%{name}
 Summary:        Python 3 interface to DNF
+%{?python_provide:%python_provide python3-%{name}}
 BuildRequires:  python3-devel
+BuildRequires:  python3-hawkey >= %{hawkey_version}
+BuildRequires:  python3-libdnf >= %{hawkey_version}
+BuildRequires:  python3-libcomps >= %{libcomps_version}
+BuildRequires:  python3-libdnf
+BuildRequires:  libmodulemd >= %{libmodulemd_version}
+Requires:       libmodulemd >= %{libmodulemd_version}
 Requires:       %{name}-data = %{version}-%{release}
-Requires:       python3-curses
-Requires:       python3-gpg
-Requires:       python3-hawkey
-Requires:       python3-libcomps
+Requires:       python3-hawkey >= %{hawkey_version}
+Requires:       python3-libdnf >= %{hawkey_version}
+Requires:       python3-libcomps >= %{libcomps_version}
 Requires:       python3-libdnf
-Requires:       python3-rpm
+BuildRequires:  python3-rpm >= %{rpm_version}
+Requires:       python3-rpm >= %{rpm_version}
+Recommends:     (rpm-plugin-systemd-inhibit if systemd)
+Provides:       dnf-command(alias)
+Provides:       dnf-command(autoremove)
+Provides:       dnf-command(check-update)
+Provides:       dnf-command(clean)
+Provides:       dnf-command(distro-sync)
+Provides:       dnf-command(downgrade)
+Provides:       dnf-command(group)
+Provides:       dnf-command(history)
+Provides:       dnf-command(info)
+Provides:       dnf-command(install)
+Provides:       dnf-command(list)
+Provides:       dnf-command(makecache)
+Provides:       dnf-command(mark)
+Provides:       dnf-command(provides)
+Provides:       dnf-command(reinstall)
+Provides:       dnf-command(remove)
+Provides:       dnf-command(repolist)
+Provides:       dnf-command(repoquery)
+Provides:       dnf-command(repository-packages)
+Provides:       dnf-command(search)
+Provides:       dnf-command(updateinfo)
+Provides:       dnf-command(upgrade)
+Provides:       dnf-command(upgrade-to)
 
 %description -n python3-%{name}
 Python 3 interface to DNF.
 
 %package automatic
-Summary:        DNF automated upgrades
+Summary:        %{pkg_summary} - automated upgrades
 BuildRequires:  systemd
-Requires:       %{name} = %{version}-%{release}
+Requires:       python3-%{name} = %{version}-%{release}
+%{?systemd_requires}
 
 %description automatic
 Systemd units that can periodically download package upgrades and apply them.
 
+
 %prep
-%setup -q
-sed -i "s/emit_via = stdio/emit_via = motd/g" etc/dnf/automatic.conf
-mkdir build
-cd build
-%cmake .. -DPYTHON_DESIRED:FILEPATH="3" -DWITH_MAN=0
+%autosetup -p1
+
+mkdir build-py3
+
+%build
+
+pushd build-py3
+%cmake .. -DPYTHON_DESIRED:FILEPATH=%{__python3} -DDNF_VERSION=%{version}
 %make_build
+make doc-man
+popd
 
 %install
 
-pushd build
+pushd build-py3
 %make_install
 popd
-%find_lang %{name}
-mkdir -p %{buildroot}%{py3pluginpath}/__pycache__/
 
-# Making DNF directories for ghosting
+%find_lang %{name}
 mkdir -p %{buildroot}%{confdir}/vars
-mkdir -p %{buildroot}%{confdir}/plugins
+mkdir -p %{buildroot}%{confdir}/aliases.d
+mkdir -p %{buildroot}%{pluginconfpath}/
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/modules.d
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/modules.defaults.d
-
-# Linking and renaming Python 3 DNF to a more common name
+mkdir -p %{buildroot}%{py3pluginpath}/__pycache__/
+mkdir -p %{buildroot}%{_localstatedir}/log/
+mkdir -p %{buildroot}%{_var}/cache/dnf/
+touch %{buildroot}%{_localstatedir}/log/%{name}.log
 ln -sr %{buildroot}%{_bindir}/dnf-3 %{buildroot}%{_bindir}/dnf
+ln -sr %{buildroot}%{_bindir}/dnf-3 %{buildroot}%{_bindir}/dnf4
 mv %{buildroot}%{_bindir}/dnf-automatic-3 %{buildroot}%{_bindir}/dnf-automatic
+rm -vf %{buildroot}%{_bindir}/dnf-automatic-*
 
-# Removing unused files
-rm -f %{buildroot}%{_bindir}/dnf-automatic-*
-rm -f %{buildroot}%{confdir}/%{name}-strict.conf
+# Strict conf distribution
+# Note for Azure Linux - need to decide on strict or non-strict
+%if 0
+mv -f %{buildroot}%{confdir}/%{name}-strict.conf %{buildroot}%{confdir}/%{name}.conf
+%else
+rm -vf %{buildroot}%{confdir}/%{name}-strict.conf
+%endif
+
+# YUM compat layer
+ln -sr  %{buildroot}%{confdir}/%{name}.conf %{buildroot}%{_sysconfdir}/yum.conf
+ln -sr  %{buildroot}%{_bindir}/dnf-3 %{buildroot}%{_bindir}/yum
+%if "%{yum_compat_level}" == "full"
+mkdir -p %{buildroot}%{_sysconfdir}/yum
+ln -sr  %{buildroot}%{pluginconfpath} %{buildroot}%{_sysconfdir}/yum/pluginconf.d
+ln -sr  %{buildroot}%{confdir}/protected.d %{buildroot}%{_sysconfdir}/yum/protected.d
+ln -sr  %{buildroot}%{confdir}/vars %{buildroot}%{_sysconfdir}/yum/vars
+%endif
+
+%if %{with dnf5_obsoletes_dnf}
+rm %{buildroot}%{confdir}/%{name}.conf
+%endif
 
 %check
-cd build
-ctest -VV
 
-%post automatic
-%systemd_post dnf-automatic-notifyonly.timer
+pushd build-py3
+ctest -VV
+popd
+
+
+%post
 %systemd_post dnf-makecache.timer
 
-%postun automatic
-%systemd_preun dnf-automatic-notifyonly.timer
+%preun
 %systemd_preun dnf-makecache.timer
+
+%postun
+%systemd_postun_with_restart dnf-makecache.timer
+
+
+%post automatic
+%systemd_post dnf-automatic.timer dnf-automatic-notifyonly.timer dnf-automatic-download.timer dnf-automatic-install.timer
+
+%preun automatic
+%systemd_preun dnf-automatic.timer dnf-automatic-notifyonly.timer dnf-automatic-download.timer dnf-automatic-install.timer
+
+%postun automatic
+%systemd_postun_with_restart dnf-automatic.timer dnf-automatic-notifyonly.timer dnf-automatic-download.timer dnf-automatic-install.timer
+
 
 %files -f %{name}.lang
 %{_bindir}/%{name}
-%{_datadir}/bash-completion/completions/dnf
+%dir %{_datadir}/bash-completion
+%dir %{_datadir}/bash-completion/completions
+%{_datadir}/bash-completion/completions/%{name}
+%{_mandir}/man8/%{name}.8*
+%{_mandir}/man8/yum2dnf.8*
+%{_mandir}/man7/dnf.modularity.7*
+%{_mandir}/man5/dnf-transaction-json.5*
 %{_unitdir}/%{name}-makecache.service
 %{_unitdir}/%{name}-makecache.timer
-
-# Yum excludes
-%exclude %{confdir}/protected.d/yum.conf
+%{_var}/cache/%{name}/
 
 %files data
 %license COPYING PACKAGE-LICENSING
 %doc AUTHORS README.rst
 %dir %{confdir}
-%dir %{confdir}/aliases.d
 %dir %{confdir}/modules.d
 %dir %{confdir}/modules.defaults.d
-%dir %{confdir}/plugins
+%dir %{pluginconfpath}
+%if %{without dnf5_obsoletes_dnf}
 %dir %{confdir}/protected.d
 %dir %{confdir}/vars
+%endif
+%dir %{confdir}/aliases.d
 %exclude %{confdir}/aliases.d/zypper.conf
+%if %{without dnf5_obsoletes_dnf}
+# If DNF5 does not obsolete DNF ownership of dnf.conf should be DNF's
 %config(noreplace) %{confdir}/%{name}.conf
-%config(noreplace) %{confdir}/protected.d/%{name}.conf
+%endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%ghost %attr(644,-,-) %{_localstatedir}/log/hawkey.log
 %ghost %attr(644,-,-) %{_localstatedir}/log/%{name}.log
 %ghost %attr(644,-,-) %{_localstatedir}/log/%{name}.librepo.log
 %ghost %attr(644,-,-) %{_localstatedir}/log/%{name}.rpm.log
@@ -123,18 +265,66 @@ ctest -VV
 %ghost %attr(644,-,-) %{_sharedstatedir}/%{name}/groups.json
 %ghost %attr(755,-,-) %dir %{_sharedstatedir}/%{name}/yumdb
 %ghost %attr(755,-,-) %dir %{_sharedstatedir}/%{name}/history
+%{_mandir}/man5/%{name}.conf.5*
 %{_tmpfilesdir}/%{name}.conf
 %{_sysconfdir}/libreport/events.d/collect_dnf.conf
 
+%files -n %{yum_subpackage_name}
+%if "%{yum_compat_level}" == "full"
+%{_bindir}/yum
+%{_sysconfdir}/yum.conf
+%{_sysconfdir}/yum/pluginconf.d
+%{_sysconfdir}/yum/protected.d
+%{_sysconfdir}/yum/vars
+%{_mandir}/man8/yum.8*
+%{_mandir}/man5/yum.conf.5.*
+%{_mandir}/man8/yum-shell.8*
+%{_mandir}/man1/yum-aliases.1*
+%if %{without dnf5_obsoletes_dnf}
+# If DNF5 does not obsolete DNF, protected.d/yum.conf should be owned by DNF
+%config(noreplace) %{confdir}/protected.d/yum.conf
+%else
+# If DNF5 obsoletes DNF
+# No longer using `noreplace` here. Older versions of DNF 4 marked `yum` as a
+# protected package, but since Fedora 39, DNF needs to be able to update itself
+# to DNF 5, so we need to replace the old /etc/dnf/protected.d/yum.conf.
+%config %{confdir}/protected.d/yum.conf
+%endif
+%else
+%exclude %{_sysconfdir}/yum.conf
+%exclude %{_sysconfdir}/yum/pluginconf.d
+%exclude %{_sysconfdir}/yum/protected.d
+%exclude %{_sysconfdir}/yum/vars
+%exclude %{confdir}/protected.d/yum.conf
+%exclude %{_mandir}/man5/yum.conf.5.*
+%exclude %{_mandir}/man8/yum-shell.8*
+%exclude %{_mandir}/man1/yum-aliases.1*
+%endif
+
+%if "%{yum_compat_level}" == "minimal"
+%{_bindir}/yum
+%{_mandir}/man8/yum.8*
+%endif
+
+%if "%{yum_compat_level}" == "preview"
+%{_bindir}/yum4
+%{_mandir}/man8/yum4.8*
+%exclude %{_mandir}/man8/yum.8*
+%endif
+
 %files -n python3-%{name}
 %{_bindir}/%{name}-3
-%{python3_sitelib}/%{name}
+%{_bindir}/%{name}4
+%exclude %{python3_sitelib}/%{name}/automatic
+%{python3_sitelib}/%{name}-*.dist-info
+%{python3_sitelib}/%{name}/
 %dir %{py3pluginpath}
-%dir %{py3pluginpath}/__pycache__/
+%dir %{py3pluginpath}/__pycache__
 
 %files automatic
 %{_bindir}/%{name}-automatic
 %config(noreplace) %{confdir}/automatic.conf
+%{_mandir}/man8/%{name}-automatic.8*
 %{_unitdir}/%{name}-automatic.service
 %{_unitdir}/%{name}-automatic.timer
 %{_unitdir}/%{name}-automatic-notifyonly.service
@@ -143,27 +333,405 @@ ctest -VV
 %{_unitdir}/%{name}-automatic-download.timer
 %{_unitdir}/%{name}-automatic-install.service
 %{_unitdir}/%{name}-automatic-install.timer
-%{python3_sitelib}/%{name}/automatic
+%{python3_sitelib}/%{name}/automatic/
 
 %changelog
-* Thu Apr 14 2022 Chris Co <chrco@microsoft.com> - 4.8.0-2
-- Emit dnf-automatic messages through motd
-- Start dnf-automatic-notifyonly timer
+* Sat Feb  3 10:56:54 EST 2024 Dan Streetman <ddstreet@ieee.org> - 4.18.2-2
+- Update to version from Fedora 39.
+- Next line is present only to avoid tooling failures, and does not indicate the actual package license.
+- Initial CBL-Mariner import from Fedora 39 (license: MIT).
+- license verified
 
-* Tue Sep 14 2021 Thomas Crain <thcrain@microsoft.com> - 4.8.0-1
-- Upgrade to latest upstream version
-- Lint spec
+* Fri Dec 08 2023 Jan Kolarik <jkolarik@redhat.com> - 4.18.2-1
+- Update to 4.18.2
+- automatic: Add feature to allow emitters to invoke on dnf error
 
-* Wed Mar 10 2021 Thomas Crain <thcrain@microsoft.com> - 4.2.18-4
-- Use modern bash-completion directory, now that dnf can auto-detect it based on bash-completion.pc
+* Tue Nov 14 2023 Petr Pisar <ppisar@redhat.com> - 4.18.1-2
+- Fix a crash and a revocation misreport in DNS key validation (RhBug:2249380)
 
-* Tue Nov 03 2020 Ruying Chen <v-ruyche@microsoft.com> - 4.2.18-3
-- Systemd supports merged /usr. Update with corresponding file locations and macros.
+* Tue Nov 07 2023 Jan Kolarik <jkolarik@redhat.com> - 4.18.1-1
+- Update to 4.18.1
+- Do not translate repoquery time format strings (RhBug:2245773)
+- automatic: Fix applying the color option
 
-* Sun Apr 12 2020 Pawel Winogrodzki <pawelwi@microsoft.com> 4.2.18-2
-- Initial CBL-Mariner import from Fedora 31 (license: MIT). Added 'Distribution' and 'Vendor' tags.
-- Fixed "Source0" tag.
-- License verified.
+* Thu Oct 19 2023 Jan Kolarik <jkolarik@redhat.com> - 4.18.0-2
+- Revert "Does not print Verify: package" (RhBug:1908253)
+
+* Wed Oct 18 2023 Jan Kolarik <jkolarik@redhat.com> - 4.18.0-1
+- Update to 4.18.0
+- base: Add obsoleters of only latest versions (RhBug:2183279,2176263)
+- comps: Fix marking a group package as installed (RhBug:2066638)
+- distro-sync: Print better info message when no match (RhBug:2011850)
+- Include dist-info for python3-dnf (RhBug:2239323)
+- Revert "Block signals during RPM transaction processing" (RhBug:2133398)
+- Do not print details of verifying (RhBug:1908253)
+- Add Recommends %{_bindir}/sqlite3 for bash-completion for Fedora
+- conf: Split $releasever to $releasever_major and $releasever_minor (RhBug:1789346)
+- Allow DNF to be removed by DNF 5 (RhBug:2221907)
+- Update translations
+
+* Thu Sep 21 2023 Jan Kolarik <jkolarik@redhat.com> - 4.17.0-6
+- Revert "Block signals during RPM transaction processing" (RhBug:2236997)
+
+* Thu Sep 21 2023 Jan Kolarik <jkolarik@redhat.com> - 4.17.0-1
+- Update to 4.17.0
+- crypto: Use libdnf crypto API instead of using GnuPG/GpgME
+- Reprotect dnf, unprotect python3-dnf (RhBug:2221905)
+- Block signals during RPM transaction processing (RhBug:2133398)
+- Fix bash completion due to sqlite changes (RhBug:2232052)
+- automatic: allow use of STARTTLS/TLS
+- automatic: use email_port specified in config
+
+* Mon Sep 11 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.2-5
+- Add patch for reprotecting dnf
+
+* Wed Aug 16 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.2-4
+- Fixes of conditions in spec file
+
+* Wed Aug 16 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.2-3
+- Configure copr repo dnf5-testing
+
+* Fri Aug 04 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.2-2
+- Revert DNF obsoletion
+
+* Thu Jul 27 2023 Nicola Sella <nsella@redhat.com> - 4.16.2-1
+- Update to 4.16.2
+- depend on /etc/dnf/dnf.conf, not libdnf5
+- Update repo metadata cache pattern to include zstd
+- Add provide exception handling
+- When parsing over a KVP list, do not return till the whole list is parsed
+- Provide /usr/bin/dnf4 symlink to /usr/bin/dnf-3
+- Document the symbols in the output of `dnf history list` (RhBug:2172067)
+
+* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 4.16.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
+
+* Wed Jun 14 2023 Python Maint <python-maint@redhat.com> - 4.16.1-3
+- Rebuilt for Python 3.12
+
+* Tue Jun 06 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.1-2
+- dnf-data: depend on /etc/dnf/dnf.conf, not libdnf5
+
+* Mon May 29 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.1-1
+- Update to 4.16.1
+- DNF5 should not deprecate DNF on Fedora 38
+
+* Thu May 25 2023 Jan Kolarik <jkolarik@redhat.com> - 4.16.0-1
+- Update to 4.16.0
+- Remove ownership of dnf.conf, protected.d, vars
+- Add requirement of libdnf5 to dnf-data
+- dnf-automatic: require python3-dnf, not dnf
+
+* Thu May 18 2023 Jan Kolarik <jkolarik@redhat.com> - 4.15.1-1
+- Update to 4.15.1
+- automatic: Fix online detection with proxy (RhBug:2022440)
+- automatic: Return an error when transaction fails (RhBug:2170093)
+- repoquery: Allow uppercased query tags (RhBug:2185239)
+- Unprotect dnf and yum, protect python3-dnf
+
+* Thu Apr 06 2023 Jan Kolarik <jkolarik@redhat.com> - 4.15.0-1
+- Update to 4.15.0
+- Add reboot option to DNF Automatic (RhBug:2124793)
+- Add support for rollback of group upgrade rollback (RhBug:2016070)
+- Omit src RPMs from check-update (RhBug:2151910)
+- repoquery: Properly sanitize queryformat strings (RhBug:2140884)
+- Don't double-encode RPM URLs passed on CLI (RhBug:2103015)
+- Allow passing CLI options when loading remote cfg (RhBug:2060127)
+- Ignore processing variable files with unsupported encoding (RhBug:2141215)
+- Fix AttributeError when IO busy and press ctrl+c (RhBug:2172433)
+- cli: Allow = in setopt values
+- Mark strftime format specifiers for translation
+- Unload plugins upon their deletion
+- Fixes in docs and help command
+- Fix plugins unit tests
+- Add unit tests for dnf mark
+- smtplib: catch OSError, not SMTPException
+
+* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 4.14.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Fri Sep 09 2022 Jaroslav Rohel <jrohel@redhat.com> - 4.14.0-1
+- Update to 4.14.0
+- doc: Describe how gpg keys are stored for `repo_ggpcheck` (RhBug:2020678)
+- Set default value for variable to prevent crash (RhBug:2091636)
+- Add only relevant pkgs to upgrade transaction (RhBug:2097757)
+- Use `installed_all` because `installed_query` is filtered user input
+- Don't include resolved advisories for obsoletes filtering with security filters (RhBug:2101421)
+- Allow passing plugin parameters with dashes in names (RhBug:1980712)
+- Fix upgrade from file to noarch pkg (RhBug:2006018)
+- Translations update
+- Expose plugin unload method to API (RhBug:2047251)
+- Add support for group upgrade rollback (RhBug:2016070)
+- Fix broken dependencies error reporting (RhBug:2088422)
+- Add doc related to --destdir and --downloadonly options (RhBug:2100811)
+
+* Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 4.13.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Wed Jun 15 2022 Python Maint <python-maint@redhat.com> - 4.13.0-2
+- Rebuilt for Python 3.11
+
+* Mon May 30 2022 Jaroslav Rohel <jrohel@redhat.com> - 4.13.0-1
+- Update to 4.13.0
+- Base.reset: plug (temporary) leak of libsolv's page file descriptors
+- Small change to better present the option
+- Use sqlite cache to make bash completion snappier (RhBug:1815895)
+
+* Fri May 13 2022 Marek Blaha <mblaha@redhat.com> - 4.12.0-2
+- Backport patch to not use re.template() deprecated in Python 3.11
+
+* Thu May 05 2022 Jaroslav Rohel <jrohel@redhat.com> - 4.12.0-1
+- Update to 4.12.0
+- dnf.conf: hint users where to find more info about defaults and other options
+- Fix unittests that relied on checksum being at the end of solvfiles
+- completion: remove unnecessary echo
+- Fix remove when no repos are enabled (RhBug:2064341)
+- Add loongarch support for dnf
+- Add spaces between words to fix typos (RhBug:2077296)
+- [doc] Improve "proxy" configuration option documentation (RhBug:2072332)
+- Fix download errors handling in non-english locales (RhBug:2024527)
+
+* Thu Apr 28 2022 Richard W.M. Jones <rjones@redhat.com> - 4.11.1-3
+- Backport fix for leak of libsolv's page file descriptors
+
+* Wed Mar 30 2022 Jaroslav Rohel <jrohel@redhat.com> - 4.11.1-2
+- Backport patch to fix: dnf breaks updateprocess with "already downloaded" (RhBug:2024527)
+
+* Mon Mar 14 2022 Pavla Kratochvilova <pkratoch@redhat.com> - 4.11.1-1
+- Update to 4.11.1
+
+* Mon Mar 14 2022 Pavla Kratochvilova <pkratoch@redhat.com> - 4.11.0-3
+- Lower conflict with dnf-plugins-core
+
+* Mon Mar 14 2022 Pavla Kratochvilova <pkratoch@redhat.com> - 4.11.0-2
+- Use older source to resolve interdependencies
+
+* Mon Mar 14 2022 Pavla Kratochvilova <pkratoch@redhat.com> - 4.11.0-1
+- Allow destdir option with modulesync command
+- Add documentation for query api flags (RhBug:2035577)
+- Fix swap command to work with local rpm files correctly (RhBug:2036434)
+- Don't recommend %{_bindir}/sqlite3 for bash-completion (RhBug:1947925)
+- Recommend rpm-plugin-systemd-inhibit only if systemd (RhBug:1947924)
+- Fix regression in verifying signatures using rpmkeys
+- Use rpm.TransactionSet.dbCookie() to determining if rpmdb has changed (RhBug:2043476)
+- Fix decompression of groups.xml (RhBug:2030255)
+- Fix history undo on a Reason Change (RhBug:2010259,2053014)
+- Remove /usr/bin from sys.path to avoid accidentally importing garbage
+- Fix: Python dnf API does not respect cacheonly (RhBug:1862970)
+- Fix python3.11 build: remove deprecated, update traceback regex
+- fix dnf mark error when history sqlite missing
+- [doc] Improve description of multilib_policy=all (RhBug:1996681,1995630)
+- [doc] clarify effect of --enablerepo and --disablerepo options (RhBug:2031414)
+- [doc] default values for module_obsoletes and module_stream_switch (RhBug: 2051846)
+
+* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 4.10.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Thu Oct 21 2021 Pavla Kratochvilova <pkratoch@redhat.com> - 4.10.0-1
+- Update to 4.10.0
+- Add support for autodetecting packages to be excluded from being installed as weak dependencies (RhBug:1699672)
+- Add support for excluding packages to be installed as weak dependencies (RhBug:1699672)
+- Add fail_fast parameter to download_payloads methods for use in reposync
+- Acquire all relevant locks during "dnf clean"
+- API: Raise CompsError when group/env not found in install_group and install_environment (RhBug:1947958)
+
+* Thu Sep 23 2021 Pavla Kratochvilova <pkratoch@redhat.com> - 4.9.0-1
+- Update to 4.9.0
+- [API] Add method "set_or_append_opt_value" to BaseConfig (RhBug:1967925)
+- Add aliases for commands: info, updateinfo, provides (RhBug:1938333)
+- Add report about demodularized rpms into module info (RhBug:1805260)
+- Remove DNSSEC errors on COPR group email keys
+- Documentation inprovements - bugs: 1938352, 1993899, 1963704
+
+* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 4.8.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Tue Jun 15 2021 Pavla Kratochvilova <pkratoch@redhat.com> - 4.8.0-1
+- Update to 4.8.0
+- Do not assume that a remote rpm is complete if present
+- Use positive percentage for "Failed delta RPMs" message
+- Remove redundant new line in Groups output
+- Format empty group names outputs to <name-unset>
+- [doc] Document default colors
+- Use rpmkeys alone to verify signature
+- Add dnf.error message to explain rpm.error traceback when package not found after resolving a transaction (RhBug:1815327,1887293,1909845)
+- Bugs fixed (RhBug:1946975,1955309)
+
+* Thu Jun 03 2021 Python Maint <python-maint@redhat.com> - 4.7.0-2
+- Rebuilt for Python 3.10
+
+* Thu Apr 15 2021 Nicola Sella <nsella@redhat.com> - 4.7.0-1
+- Improve repo config path ordering to fix a comps merging issue (RhBug:1928181)
+- Keep reason when package is removed (RhBug:1921063)
+- Improve mechanism for application of security filters (RhBug:1918475)
+- [doc] Add description for new API
+- [API] Add new method for reset of security filters
+- [doc] Improve documentation for Hotfix repositories
+- [doc] fix: "makecache" command downloads only enabled repositories
+- Use libdnf.utils.checksum_{check,value}
+- [doc] Add info that maximum parallel downloads is 20
+- Increase loglevel in case of invalid config options
+- [doc] installonly_limit documentation follows behavior
+- Prevent traceback (catch ValueError) if pkg is from cmdline
+- Add documentation for config option sslverifystatus (RhBug:1814383)
+- Check for specific key string when verifing signatures (RhBug:1915990)
+- Use rpmkeys binary to verify package signature (RhBug:1915990)
+- Bugs fixed (RhBug:1916783)
+- Preserve file mode during log rotation (RhBug:1910084)
+
+* Tue Mar 02 2021 Nicola Sella <nsella@redhat.com> - 4.6.1-1
+- Update to 4.6.1
+- Fix recreate script
+- Add unit test for fill_sack_from_repos_in_cache (RhBug:1865803)
+- Add docs and examples for fill_sack_from_repos_in_cache (RhBug:1865803)
+- [spec] remove python2 support
+- Remove problematic language
+- The noroot plugin no longer exists, remove mention
+- Run tests for fill_sack_from_repos_in_cache in installroot (RhBug:1865803)
+- expand history to full term size when output is redirected (RhBug:1852577) (RhBug:1852577,1906970)
+- [doc] Fix: "sslcacert" contains path to the file
+- [doc] Added proxy ssl configuration options, increase libdnf require
+- Set persistdir and substitutions for fill_sack_from_repos_in_cache tests (RhBug:1865803)
+- Update documentation for module_obsoletes and module_stream_switch
+- print additional information when verifying GPG key using DNS
+- Bugs fixed (RhBug:1897573)
+- Remove hardcoded logfile permissions (RhBug:1910084)
+- Enhanced detection of plugins removed in transaction (RhBug:1929163)
+
+* Thu Jan 28 2021 Nicola Sella <nsella@redhat.com> - 4.6.0-1
+- Update to 4.6.0
+- Log scriptlets output also for API users (RhBug:1847340)
+- Fix module remove --all when no match spec (RhBug:1904490)
+- yum.misc.decompress() to handle uncompressed files (RhBug:1895059)
+- Make an error message more informative (RhBug:1814831)
+- Add deprecation notice to help messages of deplist
+- Remove Base._history_undo_operations() as it was replaced with transaction_sr code
+- cli/output: Return number of listed packages from listPkgs()
+- Clean up history command error handling
+- [doc] Describe install with just a name and obsoletes (RhBug:1902279)
+- Add api function fill_sack_from_repos_in_cache to allow loading a repo cache with repomd and (solv file or primary xml) only (RhBug:1865803)
+- Packages installed/removed via DNF API are logged into dnf.log (RhBug:1855158)
+- Support comps groups in history redo (RhBug:1657123,1809565,1809639)
+- Support comps groups in history rollback (RhBug:1657123,1809565,1809639)
+- Support comps groups in history undo (RhBug:1657123,1809565,1809639)
+- New optional parameter for filter_modules enables following modular obsoletes based on a config option module_obsoletes
+- Add get_header() method to the Package class (RhBug:1876606)
+- Fix documentation of globs not supporting curly brackets (RhBug:1913418)
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 4.5.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Thu Dec 03 2020 Nicola Sella <nsella@redhat.com> - 4.5.2-1
+- Update to 4.5.2
+- Change behaviour of Package().from_repo
+
+* Wed Dec 02 2020 Nicola Sella <nsella@redhat.com> - 4.5.1-1
+- Add a get_current() method to SwdbInterface
+- Add `from_repo` attribute for Package class (RhBug:1898968,1879168)
+- Correct description of Package().reponane attribute
+- Add unittest for new API
+- Make rotated log file (mode, owner, group) match previous log settings (RhBug:1894344)
+- [doc] Improve description of modular filtering
+- [doc] add documentation for from_repo
+- [doc] deprecated alias for dnf repoquery --deplist <deplist_option-label>
+- New config option module_allow_stream_switch allows switching enabled streams
+
+* Mon Nov 23 2020 Nicola Sella <nsella@redhat.com> - 4.4.2-1
+- Update to 4.4.2
+- spec: Fix building with new cmake macros (backport from downstream)
+- Warn about key retrieval over http:
+- Fix --setopt=cachedir writing outside of installroot
+- Add vendor to dnf API (RhBug:1876561)
+- Add allow_vendor_change option (RhBug:1788371) (RhBug:1788371)
+
+* Thu Oct 29 2020 Adam Williamson <awilliam@redhat.com> - 4.4.0-3
+- Rebuild to keep NVR ahead of Fedora 32
+
+* Tue Oct 13 2020 Ales Matej <amatej@redhat.com> - 4.4.0-2
+- Increase required libdnf (hawkey) version
+
+* Wed Oct 07 2020 Nicola Sella <nsella@redhat.com> - 4.4.0-1
+- Update to 4.4.0
+- Handle empty comps group name (RhBug:1826198)
+- Remove dead history info code (RhBug:1845800)
+- Improve command emmitter in dnf-automatic
+- Enhance --querytags and --qf help output
+- [history] add option --reverse to history list (RhBug:1846692)
+- Add logfilelevel configuration (RhBug:1802074)
+- Don't turn off stdout/stderr logging longer than necessary (RhBug:1843280)
+- Mention the date/time that updates were applied
+- [dnf-automatic] Wait for internet connection (RhBug:1816308)
+- [doc] Enhance repo variables documentation (RhBug:1848161,1848615)
+- Add librepo logger for handling messages from librepo (RhBug:1816573)
+- [doc] Add package-name-spec to the list of possible specs
+- [doc] Do not use <package-nevr-spec>
+- [doc] Add section to explain -n, -na and -nevra suffixes
+- Add alias 'ls' for list command
+- README: Reference Fedora Weblate instead of Zanata
+- remove log_lock.pid after reboot(Rhbug:1863006)
+- comps: Raise CompsError when removing a non-existent group
+- Add methods for working with comps to RPMTransactionItemWrapper
+- Implement storing and replaying a transaction
+- Log failure to access last makecache time as warning
+- [doc] Document Substitutions class
+- Dont document removed attribute ``reports`` for get_best_selector
+- Change the debug log timestamps from UTC to local time
+
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.23-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Tue Jun 02 2020 Nicola Sella <nsella@redhat.com> - 4.2.23-1
+- Fix behavior of install-n, autoremove-n, remove-n, repoquery-n
+- Fix behavior of localinstall and list-updateinfo aliases
+- Add updated field to verbose output of updateinfo list (RhBug: 1801092)
+- Add comment option to transaction (RhBug:1773679)
+- Add new API for handling gpg signatures (RhBug:1339617)
+- Verify GPG signatures when running dnf-automatic (RhBug:1793298)
+- Fix up Conflicts: on python-dnf-plugins-extras
+- [doc] Move yum-plugin-post-transaction-actions to dnf-plugins-core
+- Remove args "--set-enabled", "--set-disabled" from DNF (RhBug:1727882)
+- Search command is now alphabetical (RhBug:1811802)
+- Fix downloading packages with full URL as their location
+- repo: catch libdnf.error.Error in addition to RuntimeError in load() (RhBug:1788182)
+- History table to max size when redirect to file (RhBug:1786335,1786316)
+
+* Sat May 23 2020 Miro Hrončok <mhroncok@redhat.com> - 4.2.21-2
+- Rebuilt for Python 3.9
+
+* Wed Apr 01 2020 Aleš Matěj <amatej@redhat.com> - 4.2.21-1
+- Update to 4.2.21
+- Fix completion helper if solv files not in roon cache (RhBug:1714376)
+- Add bash completion for 'dnf module' (RhBug:1565614)
+- Check command no longer reports  missing %pre and %post deps (RhBug:1543449)
+- Check if arguments can be encoded in 'utf-8'
+- [doc] Remove incorrect information about includepkgs (RhBug:1813460)
+- Fix crash with "dnf -d 6 repolist" (RhBug:1812682)
+- Do not print the first empty line for repoinfo
+- Redirect logger and repo download progress when --verbose
+- Respect repo priority when listing packages (RhBug:1800342)
+- [doc] Document that list and info commands respect repo priority
+- [repoquery] Do not protect running kernel for --unsafisfied (RhBug:1750745)
+- Remove misleading green color from the "broken dependencies" lines (RhBug:1814192)
+- [doc] Document color options
+
+* Mon Feb 24 2020 Aleš Matěj <amatej@redhat.com> - 4.2.19-1
+- List arguments: only first empty value is used (RhBug:1788154)
+- Report missing profiles or default as broken module (RhBug:1790967)
+- repoquery: fix rich deps matching by using provide expansion from libdnf (RhBug:1534123)
+- [documentation] repoquery --what* with  multiple arguments (RhBug:1790262)
+- Format history table to use actual terminal width (RhBug:1786316)
+- Update `dnf alias` documentation
+- Handle custom exceptions from libdnf
+- Fix _skipped_packages to return only skipped (RhBug:1774617)
+- Add setter for tsi.reason
+- Add new hook for commands: Run_resolved
+- Add doc entry: include url (RhBug 1786072)
+- Clean also .yaml repository metadata
+- New API function base.setup_loggers() (RhBug:1788212)
+- Use WantedBy=timers.target for all dnf timers (RhBug:1798475)
+
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 4.2.18-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
 * Wed Jan 15 2020 Aleš Matěj <amatej@redhat.com> - 4.2.18-1
 - [doc] Remove note about user-agent whitelist
@@ -209,21 +777,13 @@ ctest -VV
 
 * Wed Nov 06 2019 Pavla Kratochvilova <pkratoch@redhat.com> - 4.2.15-1
 - Update to 4.2.15
-- Improve modularity documentation (RhBug:1730162,1730162,1730807,1734081)
-- Fix detection whether system is running on battery (used by metadata caching timer) (RhBug:1498680)
-- New repoquery queryformat: %{reason}
-- Print rpm errors during test transaction (RhBug:1730348) 
-- Fix: --setopt and repo with dots
-- Fix incorrectly marked profile and stream after failed rpm transaction check (RhBug:1719679)
-- Show transaction errors inside dnf shell (RhBug:1743644)
-- Don't reinstall modified packages with the same NEVRA (RhBug:1644241)
-- dnf-automatic now respects versionlock excludes (RhBug:1746562)
 - Fix downloading local packages into destdir (RhBug:1727137)
 - Report skipped packages with identical nevra only once (RhBug:1643109)
 - Restore functionality of dnf remove --duplicates (RhBug:1674296)
 - Improve API documentation
 - Document NEVRA parsing in the man page
 - Do not wrap output when no terminal (RhBug:1577889)
+- Allow to ship alternative dnf.conf (RhBug:1752249)
 - Don't check if repo is expired if it doesn't have loaded metadata (RhBug:1745170)
 - Remove duplicate entries from "dnf search" output (RhBug:1742926)
 - Set default value of repo name attribute to repo id (RhBug:1669711)
@@ -236,11 +796,20 @@ ctest -VV
 - Add --ids option to the group command (RhBug:1706382)
 - Add --with_cve and --with_bz options to the updateinfo command (RhBug:1750528)
 
-* Thu Oct 17 2019 Ales Matej <amatej@redhat.com> - 4.2.9-5
-- Bump dnf-yum obsoletes to workaround lower version of dnf in F31 (RhBug:1760937)
+* Tue Oct 01 2019 Ales Matej <amatej@redhat.com> - 4.2.11-2
+- Fix required hawkey_version
 
-* Thu Oct 03 2019 Ales Matej <amatej@redhat.com> - 4.2.9-4
-- Backport patch to adjust default DNF settings (best, skip_if_unavailable)
+* Tue Oct 01 2019 Ales Matej <amatej@redhat.com> - 4.2.11-1
+- Improve modularity documentation (RhBug:1730162,1730162,1730807,1734081)
+- Fix detection whether system is running on battery (used by metadata caching timer) (RhBug:1498680)
+- New repoquery queryformat: %{reason}
+- Print rpm errors during test transaction (RhBug:1730348) 
+- Fix: --setopt and repo with dots
+- Fix incorrectly marked profile and stream after failed rpm transaction check (RhBug:1719679)
+- Show transaction errors inside dnf shell (RhBug:1743644)
+- Don't reinstall modified packages with the same NEVRA (RhBug:1644241)
+- dnf-automatic now respects versionlock excludes (RhBug:1746562)
+- Fully enable the modular fail safe mechanism (RhBug:1616167)
 
 * Tue Sep 10 2019 Jaroslav Mracek <jmracek@redhat.com> - 4.2.9-3
 - Backport patch to fix reinstalling packages with a different buildtime

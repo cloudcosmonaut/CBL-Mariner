@@ -1,5 +1,6 @@
 {
  "Signatures": {
-  "dnf-4.8.0.tar.gz": "85bf82c8a044a4932518451dfd018092c7ac6793affce9e0209fb6b1f3a111ed"
+  "0001-Revert-Does-not-print-Verify-package-RhBug-1908253.patch": "7bdad8d6f4f184e04603908ed33271b4be6c681b7531d502a8e1888f3591b5c0",
+  "dnf-4.18.2.tar.gz": "6c34e669d1800d9e1067d624a26c6b4a2ef99e7eca5580b36e6ca583132348e7"
  }
 }
