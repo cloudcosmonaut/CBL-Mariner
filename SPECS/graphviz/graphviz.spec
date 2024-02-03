@@ -45,7 +45,7 @@
 Summary:        Graph Visualization Tools
 Name:           graphviz
 Version:        2.42.4
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        EPL-1.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -63,6 +63,7 @@ BuildRequires:  flex
 BuildRequires:  fontconfig-devel
 BuildRequires:  freefont
 BuildRequires:  freetype-devel >= 2
+BuildRequires:  gc-devel
 BuildRequires:  gd-devel
 BuildRequires:  gmp-devel
 BuildRequires:  guile-devel
@@ -518,6 +519,9 @@ php --no-php-ini \
 %{_mandir}/man3/*.3tcl*
 
 %changelog
+* Sat Feb  3 16:07:52 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.42.4-10
+- buildrequire gc-devel
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.42.4-9
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
