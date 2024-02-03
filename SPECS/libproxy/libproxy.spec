@@ -4,7 +4,7 @@ Distribution:   Mariner
 
 Name:           libproxy
 Version:        0.4.17
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A library handling all the details of proxy configuration
 
 License:        LGPLv2+
@@ -198,6 +198,9 @@ install -Dpm 0644 %{SOURCE1} %{buildroot}/%{_mandir}/man1/proxy.1
 
 
 %changelog
+* Sat Feb  3 15:23:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.4.17-6
+- move from extended to base
+
 * Wed Mar 02 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.4.17-5
 - Initial CBL-Mariner import from Fedora 36 (license: MIT).
 - Enabling 'gnome' and 'kde' subpackages.
