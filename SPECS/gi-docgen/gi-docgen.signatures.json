@@ -1,0 +1,7 @@
+{
+ "Signatures": {
+  "fix-broken-since-obsoletes.patch": "e9eb72f892e6cc73b1305d7fcfe83f429110ae3612ff51d1a45b8925876d658d",
+  "gi-docgen-2022.2-no-web-fonts.patch": "545a6f834b8f4a3906a232cfb51668e2ef0ac549e139affc75dd3f00704c4244",
+  "gi-docgen-2023.3.tar.bz2": "1e37515e4d45dcb5e5daf648e76bb35eb7bacc16767724f9c8ba601ef088accc"
+ }
+}

@@ -4219,6 +4219,16 @@
       "component": {
         "type": "other",
         "other": {
+          "name": "gi-docgen",
+          "version": "2023.3",
+          "downloadUrl": "https://gitlab.gnome.org/GNOME/gi-docgen/-/archive/2023.3/gi-docgen-2023.3.tar.bz2"
+        }
+      }
+    },
+    {
+      "component": {
+        "type": "other",
+        "other": {
           "name": "giflib",
           "version": "5.2.1",
           "downloadUrl": "http://downloads.sourceforge.net/giflib/giflib-5.2.1.tar.gz"
