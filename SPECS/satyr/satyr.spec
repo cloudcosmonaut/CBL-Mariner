@@ -13,7 +13,7 @@ Distribution:   Mariner
 
 Name: satyr
 Version: 0.30
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: Tools to create anonymous, machine-friendly problem reports
 License: GPLv2+
 URL: https://github.com/abrt/satyr
@@ -70,6 +70,7 @@ Python 3 bindings for %{name}.
 %setup -q
 
 %build
+./autogen.sh
 %configure \
 %if %{without python3}
         --without-python3 \
@@ -117,6 +118,9 @@ make check|| {
 %endif
 
 %changelog
+* Sat Feb  3 15:24:55 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.30-4
+- move from extended to base
+
 * Tue Jan 12 2021 Joe Schmitt <joschmit@microsoft.com> - 0.30-3
 - Initial CBL-Mariner import from Fedora 31 (license: MIT).
 - Build with python3
