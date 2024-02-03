@@ -2,7 +2,7 @@
 Summary:        Compiler for the Vala programming language
 Name:           vala
 Version:        0.54.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPL
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -156,6 +156,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_libdir}/pkgconfig/valadoc-%{majver}.pc
 
 %changelog
+* Sat Feb  3 16:08:59 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.54.6-2
+- rebuild with graphviz
+
 * Mon Jan 24 2022 Henry Li <lihl@microsoft.com> - 0.54.6-1
 - Upgrade to version 0.54.6
 - Add bison, flex, gobject-introspection-devel, libxslt and graphviz-devel as BR
