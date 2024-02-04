@@ -1,7 +1,7 @@
 Summary:        Python library for creating unit tests which are simpler to write and more powerful
 Name:           python-hypothesis
 Version:        6.36.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MPLv2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -47,6 +47,9 @@ and then generates simple and comprehensible examples that make your tests fail.
 %{_bindir}/*
 
 %changelog
+* Sun Feb  4 07:15:26 EST 2024 Dan Streetman <ddstreet@ieee.org> - 6.36.2-2
+- rebuild with python3.11
+
 * Tue Feb 15 2022 Nick Samson <nisamson@microsoft.com> - 6.36.2-1
 - Updated source URL, updated to 6.36.2
 - Added hypothesis binary

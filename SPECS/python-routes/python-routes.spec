@@ -5,7 +5,7 @@
 Summary:        Python re-implementation of the Rails routes system
 Name:           python-%{pkgname}
 Version:        2.5.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        MIT
 URL:            https://routes.readthedocs.io/en/latest/
 Vendor:         Microsoft Corporation
@@ -57,6 +57,9 @@ tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:36 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.5.1-5
+- rebuild with python3.11
+
 * Sat Mar 26 2022 Jon Slobodzian <joslobo@microsoft.com> - 2.5.1-1
 - Upgrade to version 2.5.1
 

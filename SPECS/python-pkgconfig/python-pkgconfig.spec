@@ -2,7 +2,7 @@
 Summary:        Python interface to the pkg-config command line tool
 Name:           python-%{srcname}
 Version:        1.5.5
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -64,6 +64,9 @@ sed -i -e s/distutils.core/setuptools/ setup.py
 %{python3_sitelib}/%{srcname}/
 
 %changelog
+* Sun Feb  4 07:15:32 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.5.5-6
+- rebuild with python3.11
+
 * Tue Nov 01 2022 Riken Maharjan <rmaharjan@microsoft.com> - 1.5.5-5
 - License verified
 - Initial CBL-Mariner import from Fedora 37 (license: MIT).

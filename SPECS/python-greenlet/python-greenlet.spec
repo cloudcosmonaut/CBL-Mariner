@@ -9,7 +9,7 @@ and are synchronized with data exchanges on "channels".
 Summary:        Lightweight in-process concurrent programming
 Name:           python-%{modname}
 Version:        2.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 # Most is MIT except for these, which are under the Python Software License:
 # - src/greenlet/slp_platformselect.h
 # - src/greenlet/platform/ directory
@@ -67,6 +67,9 @@ PYTHONPATH="%{buildroot}%{python3_sitearch}" %{python3} -m unittest discover gre
 %{_includedir}/python%{python3_version}*/%{modname}/
 
 %changelog
+* Sun Feb  4 07:15:25 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.0.2-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0.2-1
 - Auto-upgrade to 2.0.2 - Azure Linux 3.0 - package upgrades
 

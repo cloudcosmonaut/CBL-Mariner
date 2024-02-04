@@ -15,7 +15,7 @@ Distribution:   Mariner
 
 Name:           python-virt-firmware
 Version:        %{pypi_version}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Tools for virtual machine firmware volumes
 
 License:        GPLv2
@@ -105,6 +105,9 @@ cp -ar tests %{buildroot}%{_datadir}/%{name}
 %endif
 
 %changelog
+* Sun Feb  4 07:15:41 EST 2024 Dan Streetman <ddstreet@ieee.org> - 23.5-3
+- rebuild with python3.11
+
 * Fri Jun 02 2023 Vince Perri <viperri@microsoft.com> - 23.5-2
 - License verified.
 - Initial CBL-Mariner import from Fedora 39 (license: MIT).

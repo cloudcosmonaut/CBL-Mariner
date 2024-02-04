@@ -6,7 +6,7 @@
 Summary:        A set of handlers for the Python standard library’s logging package
 Name:           python-%{pkgname}
 Version:        0.3.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Url:            https://logutils.readthedocs.io/
 Vendor:         Microsoft Corporation
@@ -56,6 +56,9 @@ python3 setup.py test
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:28 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.3.5-2
+- rebuild with python3.11
+
 * Fri Aug 21 2020 Thomas Crain <thcrain@microsoft.com> 1.4.0-1
 - Original version for CBL-Mariner
 - License verified

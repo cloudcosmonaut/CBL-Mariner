@@ -4,7 +4,7 @@
 Summary:        Purely Python RSA implementation
 Name:           python-%{pkgname}
 Version:        4.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 URL:            https://stuvel.eu/software/rsa/
 Vendor:         Microsoft Corporation
@@ -44,6 +44,9 @@ python3 setup.py install --skip-build --root=%{buildroot}
 %{_bindir}/*
 
 %changelog
+* Sun Feb  4 07:15:36 EST 2024 Dan Streetman <ddstreet@ieee.org> - 4.9-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.9-1
 - Auto-upgrade to 4.9 - Azure Linux 3.0 - package upgrades
 

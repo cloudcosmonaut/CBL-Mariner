@@ -1,7 +1,7 @@
 Summary:        Code coverage measurement for Python.
 Name:           python-coverage
 Version:        6.3.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -54,6 +54,9 @@ LANG=en_US.UTF-8 tox -e py%{python3_version_nodots}
 %{_bindir}/coverage-%{python3_version}
 
 %changelog
+* Sun Feb  4 07:15:21 EST 2024 Dan Streetman <ddstreet@ieee.org> - 6.3.2-5
+- rebuild with python3.11
+
 * Fri Dec 16 2022 Sam Meluch <sammeluch@microsoft.com> - 6.3.2-4
 - Update version of tox used for package tests
 

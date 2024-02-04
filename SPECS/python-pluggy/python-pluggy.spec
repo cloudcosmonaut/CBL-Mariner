@@ -5,7 +5,7 @@ The plugin manager stripped of pytest specific details.
 Summary:        The plugin manager stripped of pytest specific details
 Name:           python-pluggy
 Version:        1.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -51,6 +51,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} python3 -m pytest testing -k "not test
 %license LICENSE
 
 %changelog
+* Sun Feb  4 07:15:32 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.3.0-2
+- rebuild with python3.11
+
 * Tue Jan 23 2024 Andrew Phelps <anphel@microsoft.com> - 1.3.0-1
 - Upgrade to version 1.3.0
 

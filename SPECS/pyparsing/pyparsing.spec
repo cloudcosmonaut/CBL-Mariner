@@ -1,7 +1,7 @@
 Summary:        Python package with an object-oriented approach to text processing
 Name:           pyparsing
 Version:        3.0.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -45,6 +45,9 @@ tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 11:48:11 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.0.7-2
+- rebuild with python3.11
+
 * Fri Feb 04 2022 Thomas Crain <thcrain@microsoft.com> - 3.0.7-1
 - Upgrade to latest upstream version
 - Add tests

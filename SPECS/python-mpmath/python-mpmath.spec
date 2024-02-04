@@ -11,7 +11,7 @@ use gmpy to speed up high precision operations.}
 Summary:        A pure Python library for multiprecision floating-point arithmetic
 Name:           python-mpmath
 Version:        1.3.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -83,6 +83,9 @@ xvfb-run -a pytest -v
 %{python3_sitelib}/mpmath-%{version}-*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.3.0-4
+- rebuild with python3.11
+
 * Thu Apr 06 2023 Riken Maharjan <rmaharjan@microsoft.com> - 1.3.0-1
 - Initial CBL-Mariner import from Fedora 38 (license: MIT)
 - License Verified

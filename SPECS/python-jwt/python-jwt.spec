@@ -18,7 +18,7 @@ encrypted JSON objects.}
 
 Name:           python-%{pkgname}
 Version:        2.4.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        JSON Web Token implementation in Python
 License:        MIT
 Vendor:         Microsoft Corporation
@@ -70,6 +70,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %endif
 
 %changelog
+* Sun Feb  4 07:15:27 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.4.0-3
+- rebuild with python3.11
+
 * Fri Sep 30 2022 Saul Paredes <saulparedes@microsoft.com> - 2.4.0-2
 - Updating to 2.4.0-2 to fix CVE-2022-39227 (no patch, false positive confusion with python-jwt. Scanning tool to be updated).
 

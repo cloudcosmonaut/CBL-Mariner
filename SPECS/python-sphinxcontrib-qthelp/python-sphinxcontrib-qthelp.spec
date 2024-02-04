@@ -3,7 +3,7 @@
 Summary:        Sphinx extension for QtHelp documents
 Name:           python-%{pypi_name}
 Version:        1.0.3
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -77,6 +77,9 @@ pip3 install more-itertools Sphinx
 %{python3_sitelib}/sphinxcontrib_qthelp-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:38 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.3-10
+- rebuild with python3.11
+
 * Mon Jun 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.0.3-9
 - Fixing ptests.
 

@@ -6,7 +6,7 @@ replacement for dictionaries where immutability is desired.}
 Summary:        An immutable dictionary
 Name:           python-%{srcname}
 Version:        2.3.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPLv3+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -49,6 +49,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} python3 -m pytest
 %{python3_sitelib}/%{srcname}/
 
 %changelog
+* Sun Feb  4 07:15:24 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.3.8-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.3.8-1
 - Auto-upgrade to 2.3.8 - Azure Linux 3.0 - package upgrades
 

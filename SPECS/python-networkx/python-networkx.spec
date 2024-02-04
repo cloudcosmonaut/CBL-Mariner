@@ -1,7 +1,7 @@
 Summary:        Creates and Manipulates Graphs and Networks
 Name:           python-networkx
 Version:        2.8.8
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        BSD-3-Clause
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ rm -f installed-docs/INSTALL.txt
 %license LICENSE.txt
 
 %changelog
+* Sun Feb  4 07:15:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.8.8-4
+- rebuild with python3.11
+
 * Thu Apr 06 2023 Riken Maharjan <rmaharjan@microsoft.com> - 2.8.8-4
 - Initial CBL-Mariner import from Fedora 38 (license: MIT)
 - License Verified

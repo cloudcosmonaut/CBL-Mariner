@@ -4,7 +4,7 @@
 Summary:        OAuthlib authentication support for Requests.
 Name:           python-requests-oauthlib
 Version:        1.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -57,6 +57,9 @@ rm -rf %{distname}.egg-info
 %{python3_sitelib}/%{modname}-%{version}*
 
 %changelog
+* Sun Feb  4 07:15:36 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.3.1-2
+- rebuild with python3.11
+
 * Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.1-1
 - Auto-upgrade to 1.3.1 - Azure Linux 3.0 - package upgrades
 

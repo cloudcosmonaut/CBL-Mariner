@@ -3,7 +3,7 @@
 Summary:        Backport of pathlib-compatible object wrapper for zip files
 Name:           python-%{pypi_name}
 Version:        3.8.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -64,6 +64,9 @@ rm -rf .pyproject-builddir
 %doc README.rst
 
 %changelog
+* Sun Feb  4 07:15:42 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.8.0-3
+- rebuild with python3.11
+
 * Fri Apr 08 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 3.8.0-2
 - Initial CBL-Mariner import from Fedora 35 (license: MIT).
 - Cleaning-up spec. License verified.

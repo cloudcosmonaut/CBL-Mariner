@@ -3,7 +3,7 @@
 Summary:        Create and extract conda packages of various formats
 Name:           python-%{srcname}
 Version:        1.7.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -66,6 +66,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/%{pkgname}/
 
 %changelog
+* Sun Feb  4 07:15:21 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.7.2-4
+- rebuild with python3.11
+
 * Wed Jun 23 2021 Rachel Menge <rachelmenge@microsoft.com> - 1.7.2-3
 - Initial CBL-Mariner import from Fedora 34 (license: MIT)
 - License verified

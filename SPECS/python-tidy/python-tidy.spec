@@ -5,7 +5,7 @@ files through a Pythonic interface.
 Summary:        Python wrapper for tidy, from the HTML tidy project
 Name:           python-tidy
 Version:        0.6
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -46,6 +46,9 @@ python3 setup.py test || :
 %{python3_sitelib}/uTidylib-*-py3*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:40 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.6-6
+- rebuild with python3.11
+
 * Wed Nov 30 2022 Riken Maharjan <rmaharjan@microsoft.com> - 0.6-5
 - Move to Core.
 - License verified.

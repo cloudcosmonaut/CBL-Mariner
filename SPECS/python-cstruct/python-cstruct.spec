@@ -6,7 +6,7 @@ methods for serializing/deserializing.}
 Summary:        C-style structs for Python
 Name:           python-%{srcname}
 Version:        5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -46,6 +46,9 @@ Requires:       python3
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:22 EST 2024 Dan Streetman <ddstreet@ieee.org> - 5.2-2
+- rebuild with python3.11
+
 * Tue Mar 08 2022 Dallas Delaney <dadelan@microsoft.com> - 5.2-1
 - Original version for CBL-Mariner
 - License verified

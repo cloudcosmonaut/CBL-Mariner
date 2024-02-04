@@ -2,7 +2,7 @@
 Summary:        Pytest plugin for coverage reporting
 Name:           python-%{srcname}
 Version:        2.12.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ tox -e py%{python3_version_nodots} -v
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:34 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.12.1-4
+- rebuild with python3.11
+
 * Fri Apr 29 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.12.1-3
 - Updating source URL.
 

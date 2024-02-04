@@ -2,7 +2,7 @@
 Summary:        Applying JSON Patches in Python
 Name:           python-jsonpatch
 Version:        1.32
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -48,6 +48,9 @@ ln -s jsonpatch %{buildroot}%{_bindir}/jsonpatch3
 %{_bindir}/jsonpatch3
 
 %changelog
+* Sun Feb  4 07:15:27 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.32-2
+- rebuild with python3.11
+
 * Thu Feb 10 2022 Thomas Crain <thcrain@microsoft.com> - 1.32-1
 - Upgrade to latest upstream version
 - Use github source tarball

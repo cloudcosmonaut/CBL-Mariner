@@ -2,7 +2,7 @@
 Summary:        Low-level components of distutils2/packaging, augmented with higher-level APIs
 Name:           python-distlib
 Version:        0.3.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        Python
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -63,6 +63,9 @@ export PYTHONHASHSEED=0
 %doc README.rst
 
 %changelog
+* Sun Feb  4 07:15:23 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.3.6-3
+- rebuild with python3.11
+
 * Tue Dec 21 2021 Riken Maharjan <rmaharjan@microsoft.com> - 0.3.6-2
 - Initial CBL-Mariner import from Fedora 37 (license: MIT)
 - License verified.

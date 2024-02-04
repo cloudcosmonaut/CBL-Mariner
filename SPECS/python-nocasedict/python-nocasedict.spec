@@ -3,7 +3,7 @@
 Summary:        Case-insensitive ordered dictionary library for Python
 Name:           python-%{pkgname}
 Version:        2.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.0.1-2
+- rebuild with python3.11
+
 * Fri Nov 03 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0.1-1
 - Auto-upgrade to 2.0.1 - Azure Linux 3.0 - package upgrades
 

@@ -3,7 +3,7 @@
 Summary:        Sphinx extension for serialized HTML
 Name:           python-%{pypi_name}
 Version:        1.1.5
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -72,6 +72,9 @@ pip3 install Sphinx
 %{python3_sitelib}/sphinxcontrib_serializinghtml-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:38 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.1.5-6
+- rebuild with python3.11
+
 * Thu Apr 07 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.1.5-5
 - Installing 'python3-sphinx' through pip3 during tests to remove cyclic dependency.
 

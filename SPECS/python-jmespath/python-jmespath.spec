@@ -1,7 +1,7 @@
 Summary:        Query Language for JSON
 Name:           python-jmespath
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -47,6 +47,9 @@ pip3 install nose mock
 %{_bindir}/jp.py-%{python3_version}
 
 %changelog
+* Sun Feb  4 07:15:27 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.1-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.1-1
 - Auto-upgrade to 1.0.1 - Azure Linux 3.0 - package upgrades
 

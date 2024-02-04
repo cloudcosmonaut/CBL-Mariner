@@ -2,7 +2,7 @@
 Summary:        Container class boilerplate killer
 Name:           python-%{srcname}
 Version:        5.0.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -94,6 +94,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/%{srcname}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:24 EST 2024 Dan Streetman <ddstreet@ieee.org> - 5.0.0-11
+- rebuild with python3.11
+
 * Sun Feb 13 2022 Jon Slobodzian <joslobo@microsoft,.com> - 5.0.0-10
 - Add missing build requires on python-devel
 

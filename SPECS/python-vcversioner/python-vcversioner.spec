@@ -2,7 +2,7 @@
 Summary:        Python version extractor
 Name:           python-vcversioner
 Version:        2.16.0.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -46,6 +46,9 @@ cp %{SOURCE1} .
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:41 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.16.0.0-7
+- rebuild with python3.11
+
 * Tue Feb 08 2022 Muhammad Falak <mwani@microsoft.com> - 2.16.0.0-6
 - Fix typo `s/setup/setup.py/` in `%check` section to enable ptest
 

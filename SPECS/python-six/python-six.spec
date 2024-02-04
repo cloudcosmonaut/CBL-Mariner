@@ -1,7 +1,7 @@
 Summary:        Python 2 and 3 compatibility utilities
 Name:           python-six
 Version:        1.16.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT
 Group:          Development/Languages/Python
 URL:            https://pypi.org/project/six/
@@ -45,6 +45,9 @@ pip3 install pytest
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:37 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.16.0-3
+- rebuild with python3.11
+
 * Tue Mar 22 2022 Olivia Crain <oliviacrain@microsoft.com> - 1.16.0-2
 - Remove python2 package
 - Add license file to the python3 subpackage

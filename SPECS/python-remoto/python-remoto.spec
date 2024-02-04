@@ -2,7 +2,7 @@
 Summary:        A very simplistic remote-command-executor
 Name:           python-%{pkgname}
 Version:        1.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -53,6 +53,9 @@ python3 -m pytest -v remoto/tests
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:35 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.2.1-2
+- rebuild with python3.11
+
 * Wed Mar 30 2022 Olivia Crain <oliviacrain@microsoft.com> - 1.2.1-1
 - Upgrade to latest upstream version
 - Pass check section with newer python environment

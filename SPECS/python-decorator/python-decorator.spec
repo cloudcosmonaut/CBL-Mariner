@@ -10,7 +10,7 @@
 Summary:        Module to simplify usage of decorators
 Name:           python-%{pypi_name}
 Version:        4.4.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        BSD
 URL:            https://github.com/micheles/decorator
 Source0:        https://files.pythonhosted.org/packages/source/d/%{pypi_name}/%{pypi_name}-%{version}.tar.gz#/%{name}-%{version}.tar.gz
@@ -57,6 +57,9 @@ find %{buildroot} -name SOURCES.txt~ -exec rm -f {} \;
 %{python3_sitelib}/__pycache__/*
 
 %changelog
+* Sun Feb  4 07:15:22 EST 2024 Dan Streetman <ddstreet@ieee.org> - 4.4.2-6
+- rebuild with python3.11
+
 * Mon Jan 31 2022 Cameron Baird <cameronbaird@microsoft.com> - 4.4.2-5
 - Move to SPECS
 - License verified

@@ -8,7 +8,7 @@ comes with good defaults out of the box.
 Summary:        Simple wrapper around optparse for powerful command line utilities
 Name:           python-%{pypi_name}
 Version:        8.1.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD-3-Clause
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ pytest -v tests
 %{python3_sitelib}/%{pypi_name}-*.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:21 EST 2024 Dan Streetman <ddstreet@ieee.org> - 8.1.7-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 8.1.7-1
 - Auto-upgrade to 8.1.7 - Azure Linux 3.0 - package upgrades
 

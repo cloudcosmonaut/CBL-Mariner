@@ -7,7 +7,7 @@
 Summary:        A pythonic, object-oriented HTTP framework
 Name:           python-%{pkgname}
 Version:        18.9.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Url:            https://cherrypy.dev/
 Vendor:         Microsoft Corporation
@@ -69,6 +69,9 @@ tox -e py%{python3_version_nodots}
 %{_bindir}/cherryd
 
 %changelog
+* Sun Feb  4 07:15:21 EST 2024 Dan Streetman <ddstreet@ieee.org> - 18.9.0-2
+- rebuild with python3.11
+
 * Tue Jan 23 2024 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 18.9.0-1
 - Auto-upgrade to 18.9.0 - Azure Linux 3.0 - package upgrades
 

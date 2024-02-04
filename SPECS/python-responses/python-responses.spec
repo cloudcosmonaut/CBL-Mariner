@@ -2,7 +2,7 @@
 Summary:        A utility library for mocking out the requests Python library.
 Name:           python-%{srcname}
 Version:        0.23.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -54,6 +54,9 @@ tox -e py%{python3_version_nodots} --sitepackages
 %{python3_sitelib}/%{srcname}
 
 %changelog
+* Sun Feb  4 07:15:36 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.23.3-2
+- rebuild with python3.11
+
 * Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.23.3-1
 - Auto-upgrade to 0.23.3 - Azure Linux 3.0 - package upgrades
 

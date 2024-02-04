@@ -1,7 +1,7 @@
 Summary:        Python development support library
 Name:           python-py
 Version:        1.10.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -49,6 +49,9 @@ py.code: dynamic code generation and introspection
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.10.0-4
+- rebuild with python3.11
+
 * Wed Feb 16 2022 Thomas Crain <thcrian@microsoft.com> - 1.10.0-3
 - Fix accidental double-packaging of python3 subpackage in main package
 

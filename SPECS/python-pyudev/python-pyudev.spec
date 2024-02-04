@@ -3,7 +3,7 @@
 Summary:        A libudev binding
 Name:           python-%{srcname}
 Version:        0.22.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -76,6 +76,9 @@ rm -rf pyudev.egg-info
 %exclude %{python3_sitelib}/pyudev/__pycache__/wx.*
 
 %changelog
+* Sun Feb  4 07:15:35 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.22.0-4
+- rebuild with python3.11
+
 * Thu Sep 30 2021 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.22.0-3
 - Breaking circular dependency on 'systemd' by using 'Recommends' instead of 'Requires'.
 

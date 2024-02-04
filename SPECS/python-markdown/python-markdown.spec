@@ -3,7 +3,7 @@
 Summary:        Markdown implementation in Python
 Name:           python-%{pkgname}
 Version:        3.2.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -62,6 +62,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{_bindir}/markdown_py
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.2.2-5
+- rebuild with python3.11
+
 * Wed Nov 30 2022 Riken Maharjan <rmaharjan@microsoft.com> - 3.2.2-4
 - Move to Core.
 - License verified.

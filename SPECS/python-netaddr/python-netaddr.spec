@@ -1,7 +1,7 @@
 Summary:        A network address manipulation library for Python
 Name:           python-netaddr
 Version:        0.8.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ LANG=en_US.UTF-8 PYTHONPATH=./ %{python3} setup.py test
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.8.0-2
+- rebuild with python3.11
+
 * Mon Jan 24 2022 Thomas Crain <thcrain@microsoft.com> - 0.8.0-1
 - Upgrade to latest upstream version
 

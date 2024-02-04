@@ -1,7 +1,7 @@
 Summary:        A python based HTML parser/tokenizer
 Name:           python-html5lib
 Version:        1.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -67,6 +67,9 @@ pip3 install more-itertools umsgpack webencodings
 %doc CHANGES.rst README.rst
 
 %changelog
+* Sun Feb  4 07:15:26 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.1-10
+- rebuild with python3.11
+
 * Fri Apr 08 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.1-9
 - Initial CBL-Mariner import from Fedora 36 (license: MIT).
 - Cleaning-up spec. License verified.

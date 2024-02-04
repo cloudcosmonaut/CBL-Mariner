@@ -3,7 +3,7 @@
 Summary:        Sphinx extension for Devhelp documents
 Name:           python-%{pypi_name}
 Version:        1.0.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -76,6 +76,9 @@ pip3 install more-itertools Sphinx
 %{python3_sitelib}/sphinxcontrib_devhelp-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:38 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.2-9
+- rebuild with python3.11
+
 * Fri Apr 08 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.0.2-8
 - Initial CBL-Mariner import from Fedora 36 (license: MIT).
 - Cleaning-up spec. License verified.

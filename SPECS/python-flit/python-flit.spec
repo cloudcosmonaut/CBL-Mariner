@@ -13,7 +13,7 @@ so long as they can be imported on Python 3.}
 Summary:        Simplified packaging of Python modules
 Name:           python-%{srcname}
 Version:        3.9.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 # ./flit/log.py under ASL 2.0 license
 # ./flit/upload.py under PSF license
 License:        BSD AND ASL 2.0 AND Python
@@ -101,6 +101,9 @@ sudo -u test %pytest -k "not test_test_writable_dir_win"
 %{_bindir}/flit
 
 %changelog
+* Sun Feb  4 07:15:24 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.9.0-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.9.0-1
 - Auto-upgrade to 3.9.0 - Azure Linux 3.0 - package upgrades
 

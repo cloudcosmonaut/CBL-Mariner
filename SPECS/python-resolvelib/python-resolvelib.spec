@@ -3,7 +3,7 @@
 Summary:        Resolve abstract dependencies into concrete ones
 Name:           python-%{pypi_name}
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -52,6 +52,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Sun Feb  4 07:15:36 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.1-2
+- rebuild with python3.11
+
 * Fri Jun 23 2023 Sam Meluch <sammeluch@microsoft.com> - 1.0.1-1
 - Initial CBL-Mariner import from Fedora 38 (license: ISC).
 - License verified

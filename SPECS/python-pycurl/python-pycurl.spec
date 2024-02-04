@@ -1,7 +1,7 @@
 Summary:        A Python interface to libcurl
 Name:           python-pycurl
 Version:        7.43.0.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 License:        LGPLv2+ OR MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -75,6 +75,9 @@ LANG=en_US.UTF-8  make test PYTHON=python%{python3_version} NOSETESTS="nosetests
 %doc RELEASE-NOTES.rst ChangeLog README.rst examples doc tests
 
 %changelog
+* Sun Feb  4 07:15:34 EST 2024 Dan Streetman <ddstreet@ieee.org> - 7.43.0.2-11
+- rebuild with python3.11
+
 * Fri Dec 03 2021 Thomas Crain <thcrain@microsoft.com> - 7.43.0.2-10
 - Replace easy_install usage with pip in %%check sections
 

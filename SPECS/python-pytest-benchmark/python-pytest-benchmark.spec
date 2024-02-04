@@ -13,7 +13,7 @@ Notable features and goals:\
 Summary:        A py.test fixture for benchmarking code
 Name:           python-%{srcname}
 Version:        3.4.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -81,6 +81,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/pytest_benchmark-%{version}-py*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:34 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.4.1-3
+- rebuild with python3.11
+
 * Thu Oct 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 3.4.1-2
 - Froze 'pytest' version to 7.1.2 to stabilize tests.
 - Disabled test broken upsteam.

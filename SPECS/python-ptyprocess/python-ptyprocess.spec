@@ -3,7 +3,7 @@
 Summary:        Run a subprocess in a pseudo terminal
 Name:           python-%{srcname}
 Version:        0.7.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -47,6 +47,9 @@ python3 -m pytest -v
 %{python3_sitelib}/ptyprocess-*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.7.0-3
+- rebuild with python3.11
+
 * Wed Jun 23 2021 Thomas Crain <thcrain@microsoft.com> - 0.7.0-2
 - Fix package test by using pip to install test requirements
 

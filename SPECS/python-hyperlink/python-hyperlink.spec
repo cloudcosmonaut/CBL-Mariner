@@ -1,7 +1,7 @@
 Summary:        provides a pure-Python implementation of immutable URLs
 Name:           python-hyperlink
 Version:        21.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -49,6 +49,9 @@ pytest
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:26 EST 2024 Dan Streetman <ddstreet@ieee.org> - 21.0.0-2
+- rebuild with python3.11
+
 * Mon Feb 14 2022 Nick Samson <nisamson@microsoft.com> - 21.0.0-1
 - Updated to 21.0.0
 - Updated URL and Source0 to reflect github change.

@@ -1,7 +1,7 @@
 Summary:        WebSocket client for python
 Name:           python-websocket-client
 Version:        1.6.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -58,6 +58,9 @@ pytest3 -vv websocket/tests -k "not echo-server"
 %{_bindir}/wsdump
 
 %changelog
+* Sun Feb  4 07:15:41 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.6.2-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.6.2-1
 - Auto-upgrade to 1.6.2 - Azure Linux 3.0 - package upgrades
 

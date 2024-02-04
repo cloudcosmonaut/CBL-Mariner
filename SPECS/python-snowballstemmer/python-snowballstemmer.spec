@@ -6,7 +6,7 @@
 Summary:        Python stemming library
 Name:           python-snowballstemmer
 Version:        2.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD-3-Clause
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -63,6 +63,9 @@ It includes following language algorithms:
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:37 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.2.0-2
+- rebuild with python3.11
+
 * Fri Mar 25 2022 Jon Slobodzian <joslobo@microsoft.com> - 2.2.0-1
 - Upgrade to latest version
 

@@ -1,7 +1,7 @@
 Summary:        Symbolic constants in Python
 Name:           python-constantly
 Version:        15.1.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -42,6 +42,9 @@ A library that provides symbolic constant support. It includes collections and c
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:21 EST 2024 Dan Streetman <ddstreet@ieee.org> - 15.1.0-7
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 15.1.0-6
 - Add license to python3 package
 - Remove python2 package

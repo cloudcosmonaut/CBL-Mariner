@@ -1,7 +1,7 @@
 Summary:        Simple Python style checker in one Python file
 Name:           python-pycodestyle
 Version:        2.11.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -45,6 +45,9 @@ tox -e py%{python3_version_nodots}
 %{_bindir}/pycodestyle
 
 %changelog
+* Sun Feb  4 07:15:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.11.0-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.11.0-1
 - Auto-upgrade to 2.11.0 - Azure Linux 3.0 - package upgrades
 

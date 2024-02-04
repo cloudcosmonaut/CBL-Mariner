@@ -1,7 +1,7 @@
 Summary:        The fastest markdown parser in pure Python.
 Name:           python-mistune
 Version:        0.8.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -45,6 +45,9 @@ The fastest markdown parser in pure Python with renderer features, inspired by m
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.8.3-6
+- rebuild with python3.11
+
 * Wed Feb 09 2022 Muhammad Falak <mwani@microsoft.com> - 0.8.3-5
 - Add an explict BR on 'pip' to enable ptest
 

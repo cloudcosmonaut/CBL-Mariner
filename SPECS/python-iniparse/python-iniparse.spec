@@ -1,7 +1,7 @@
 Summary:        Python Module for Accessing and Modifying Configuration Data in INI files
 Name:           python-iniparse
 Version:        0.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT OR Python
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -51,6 +51,9 @@ mv %{buildroot}%{_docdir}/iniparse-%{version} %{buildroot}%{_docdir}/%{name}-%{v
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:26 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.5-2
+- rebuild with python3.11
+
 * Thu Mar 03 2022 Nick Samson <nisamson@microsoft.com> - 0.5-1
 - Updated to 0.5
 - Removed unnecessary compatibility patch

@@ -1,7 +1,7 @@
 Summary:        Config file reading, writing and validation
 Name:           python-configobj
 Version:        5.0.6
-Release:        7%{?dist}
+Release:        8%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -43,6 +43,9 @@ cp %{SOURCE1} ./
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:21 EST 2024 Dan Streetman <ddstreet@ieee.org> - 5.0.6-8
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 5.0.6-7
 - Add license to python3 package
 - Remove python2 package

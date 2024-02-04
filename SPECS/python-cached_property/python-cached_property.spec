@@ -3,7 +3,7 @@
 Summary:        A cached-property for decorating methods in Python classes
 Name:           python-%{modulename}
 Version:        1.5.2
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -56,6 +56,9 @@ pip3 install pytest==7.1.3 freezegun
 %{python3_sitelib}/__pycache__/%{modulename}*
 
 %changelog
+* Sun Feb  4 07:15:20 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.5.2-10
+- rebuild with python3.11
+
 * Tue Nov 01 2022 Riken Maharjan <rmaharjan@microsoft.com> - 1.5.2-9
 - License verified
 - Initial CBL-Mariner import from Fedora 37 (license: MIT).

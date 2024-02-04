@@ -1,7 +1,7 @@
 Summary:        Simple, fast, extensible JSON encoder/decoder for Python.
 Name:           python-simplejson
 Version:        3.17.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT OR AFL
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -39,6 +39,9 @@ It is pure Python code with no dependencies, but includes an optional C extensio
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:37 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.17.6-2
+- rebuild with python3.11
+
 * Tue Mar 29 2022 Olivia Crain <oliviacrain@microsoft.com> - 3.17.6-1
 - Upgrade to latest upstream version
 

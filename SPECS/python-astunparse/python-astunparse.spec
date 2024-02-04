@@ -3,7 +3,7 @@
 Summary:        An AST unparser for Python
 Name:           python-%{pypi_name}
 Version:        1.6.3
-Release:        10%{?dist}
+Release:        11%{?dist}
 # Primarily under the terms of BSD
 # The unparse and the test_unparse modules are under the PSF license.
 License:        BSD AND PSF
@@ -54,6 +54,9 @@ python3 setup.py test
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:19 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.6.3-11
+- rebuild with python3.11
+
 * Thu Oct 06 2022 Riken Maharjan <rmaharjan@microsoft.com> - 1.6.3-10
 - Initial CBL-Mariner import from Fedora 37 (license: MIT)
 - License verified

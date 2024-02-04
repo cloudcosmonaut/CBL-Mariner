@@ -4,7 +4,7 @@
 Summary:        Various memoizing collections and decorators
 Name:           python-%{pkgname}
 Version:        5.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 URL:            https://github.com/tkem/cachetools
 Vendor:         Microsoft Corporation
@@ -43,6 +43,9 @@ python3 setup.py install --skip-build --root=%{buildroot}
 %{python3_sitelib}/*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:20 EST 2024 Dan Streetman <ddstreet@ieee.org> - 5.0.0-2
+- rebuild with python3.11
+
 * Wed Feb 09 2022 Nick Samson <nisamson@microsoft.com> - 5.0.0-1
 - Updated to 5.0.0
 

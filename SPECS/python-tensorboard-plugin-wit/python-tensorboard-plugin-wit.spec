@@ -6,7 +6,7 @@ Machine Learning What If Tool}
 Summary:        Machine Learning What If Tool
 Name:           python-%{pypi_name}
 Version:        1.8.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -43,5 +43,8 @@ mkdir -p pyproject-wheeldir/ && cp ./dist/*.whl pyproject-wheeldir/
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:39 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.8.1-2
+- rebuild with python3.11
+
 * Mon Dec 19 2022 Riken Maharjan <rmaharjan@microsoft.com> - 1.8.1-1
 - Original version for CBL-Mariner. License Verified.

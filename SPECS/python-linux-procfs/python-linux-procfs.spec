@@ -2,7 +2,7 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Name: python-linux-procfs
 Version: 0.6.1
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: GPLv2
 Summary: Linux /proc abstraction classes
 Source: https://git.kernel.org/pub/scm/libs/python/%{name}/%{name}.git/snapshot/%{name}-%{version}.tar.gz
@@ -43,6 +43,9 @@ rm -rf %{buildroot}
 %license COPYING
 
 %changelog
+* Sun Feb  4 07:15:28 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.6.1-10
+- rebuild with python3.11
+
 * Mon Apr 11 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.6.1-9
 - Fixing invalid source URL.
 

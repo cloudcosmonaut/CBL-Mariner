@@ -8,7 +8,7 @@ Distribution:   Mariner
 
 Name:           python-%{pypi_name}
 Version:        0.15
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python module to interface with %{pypi_name}
 
 License:        GPLv2
@@ -78,6 +78,9 @@ export PYTHONPATH=%{buildroot}%{python3_sitearch}
 %{python3_sitearch}/%{pypi_name}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:23 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.15-2
+- rebuild with python3.11
+
 * Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.15-1
 - Auto-upgrade to 0.15 - Azure Linux 3.0 - package upgrades
 

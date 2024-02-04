@@ -6,7 +6,7 @@ Python iterables.}
 Summary:        More routines for operating on Python iterables, beyond itertools
 Name:           python-more-itertools
 Version:        8.13.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -44,6 +44,9 @@ tox -e py%{python3_version_nodots}
 %license LICENSE
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 8.13.0-4
+- rebuild with python3.11
+
 * Tue Aug 22 2023 Osama Esmail <osamaesmail@microsoft.com> - 8.13.0-3
 - Fixing tests by adding 'tox'
 

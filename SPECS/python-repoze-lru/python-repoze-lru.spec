@@ -6,7 +6,7 @@
 Summary:        A tiny LRU cache implementation and decorator
 Name:           python-%{pkgname}
 Version:        0.7
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        BSD
 URL:            https://github.com/repoze/repoze.lru
 Vendor:         Microsoft Corporation
@@ -53,6 +53,9 @@ LANG=en_US.UTF-8 tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:35 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.7-6
+- rebuild with python3.11
+
 * Wed Apr 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.7-5
 - Updating source URL.
 

@@ -1,7 +1,7 @@
 Summary:        An implementation of JSON Schema validation for Python
 Name:           python-jsonschema
 Version:        2.6.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -47,6 +47,9 @@ ln -s jsonschema %{buildroot}%{_bindir}/jsonschema3
 %{_bindir}/jsonschema3
 
 %changelog
+* Sun Feb  4 07:15:27 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.6.0-7
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 2.6.0-6
 - Remove python2 package
 - Lint spec

@@ -3,7 +3,7 @@
 Summary:        %{sum}
 Name:           python-%{pypi_name}
 Version:        1.1.0
-Release:        30%{?dist}
+Release:        31%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -46,6 +46,9 @@ A Python 3 version of ANSI Color formatting for output in terminal.
 %{python3_sitelib}/__pycache__/%{pypi_name}.cpython-%{python3_version_nodots}*.py?
 
 %changelog
+* Sun Feb  4 07:15:40 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.1.0-31
+- rebuild with python3.11
+
 * Fri Oct 21 2022 Riken Maharjan <rmaharjan@microsoft.com> - 1.1.0-30
 - Initial CBL-Mariner import from Fedora 37 (license: MIT).
 - License verified.

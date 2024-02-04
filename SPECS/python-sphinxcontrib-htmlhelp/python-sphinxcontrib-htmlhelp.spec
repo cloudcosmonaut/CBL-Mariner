@@ -3,7 +3,7 @@
 Summary:        Sphinx extension for HTML help files
 Name:           python-%{pypi_name}
 Version:        2.0.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -79,6 +79,9 @@ python3 -m pytest
 %{python3_sitelib}/sphinxcontrib_htmlhelp-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:38 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.0.0-6
+- rebuild with python3.11
+
 * Mon Jun 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.0.0-5
 - Fixing ptests.
 

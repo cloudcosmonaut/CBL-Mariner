@@ -1,7 +1,7 @@
 Summary:        Google's Python IP address manipulation library
 Name:           python-ipaddr
 Version:        2.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -40,6 +40,9 @@ ipaddr.py is a library for working with IP addresses, both IPv4 and IPv6. It was
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:27 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.2.0-4
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 2.2.0-3
 - Add license to python3 package
 - Remove python2 package

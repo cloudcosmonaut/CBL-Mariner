@@ -3,7 +3,7 @@
 Summary:        Cython implementation of the toolz package
 Name:           python-%{srcname}
 Version:        0.12.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -101,6 +101,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %exclude %{python3_sitearch}/.pytest_cache/
 
 %changelog
+* Sun Feb  4 07:15:22 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.12.2-3
+- rebuild with python3.11
+
 * Thu Jan 11 2024 Mandeep Plaha <mandeepplaha@microsoft.com> - 0.12.2-2
 - Remove CPython from %check pip3 install.
 

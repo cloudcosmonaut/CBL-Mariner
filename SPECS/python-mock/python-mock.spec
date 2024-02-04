@@ -5,7 +5,7 @@
 Summary:        A Python Mocking and Patching Library for Testing
 Name:           python-mock
 Version:        4.0.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -65,6 +65,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/%{mod_name}
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 4.0.3-2
+- rebuild with python3.11
+
 * Mon Mar 21 2022 Nick Samson <nicksamson@microsoft.com> - 4.0.3-1
 - Upgraded to 4.0.3
 - Updated source URL to use PyPI source for URL stability

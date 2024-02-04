@@ -7,7 +7,7 @@ Tomli is fully compatible with TOML v1.0.0.}
 Summary:        A little TOML parser for Python
 Name:           python-%{pypi_name}
 Version:        2.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -62,6 +62,9 @@ test -f %{buildroot}%{python3_sitelib}/tomli-%{version}.dist-info/METADATA
 %license LICENSE
 
 %changelog
+* Sun Feb  4 07:15:40 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.0.1-4
+- rebuild with python3.11
+
 * Mon Apr 04 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.0.1-3
 - Removed BR on "python3-pytest" to break a circular dependency. Replaced with build-time pip3 installation.
 

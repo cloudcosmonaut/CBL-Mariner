@@ -1,7 +1,7 @@
 Summary:        A fast, pure Python library for parsing and serializing ASN.1 structures.
 Name:           python-asn1crypto
 Version:        1.5.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -44,6 +44,9 @@ tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:19 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.5.1-2
+- rebuild with python3.11
+
 * Wed Apr 13 2022 Olivia Crain <oliviacrain@microsoft.com> - 1.5.1-1
 - Upgrade to latest upstream version
 - Add tests using tox-based runner

@@ -14,7 +14,7 @@ theory that these may well be added to native async generators one day).
 Summary:        Async generators and context managers
 Name:           python-%{pkgname}
 Version:        1.10
-Release:        10%{?dist}
+Release:        11%{?dist}
 License:        MIT or ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -61,6 +61,9 @@ python%{python3_version} -m pytest -v
 %{python3_sitelib}/%{eggname}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Sun Feb  4 07:15:19 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.10-11
+- rebuild with python3.11
+
 * Wed Jun 23 2021 Rachel Menge <rachelmenge@microsoft.com> - 1.10-10
 - Initial CBL-Mariner import from Fedora 34 (license: MIT)
 - License verified

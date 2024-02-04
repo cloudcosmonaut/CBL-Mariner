@@ -1,7 +1,7 @@
 Summary:        Enable python source code refactoring through AST modifications
 Name:           python-google-pasta
 Version:        0.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -42,5 +42,8 @@ python3 setup.py test
 
 
 %changelog
+* Sun Feb  4 07:15:25 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.2.0-2
+- rebuild with python3.11
+
 * Wed Oct 26 2022 Riken Maharjan <rmaharjan@microsoft.com> - 0.2.0-1
 - Original version for CBL-Mariner. License Verified.

@@ -3,7 +3,7 @@
 Summary:        %{sum}
 Name:           python-%{srcname}
 Version:        7.0.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -79,6 +79,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/py_%{srcname}-%{version}-py3.*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:22 EST 2024 Dan Streetman <ddstreet@ieee.org> - 7.0.0-5
+- rebuild with python3.11
+
 * Wed Jun 23 2021 Rachel Menge <rachelmenge@microsoft.com> - 7.0.0-4
 - Update check section to use pytest
 - License verified

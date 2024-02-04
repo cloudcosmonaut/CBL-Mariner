@@ -2,7 +2,7 @@
 Summary:        An asynchronous networking framework written in Python
 Name:           python-twisted
 Version:        22.10.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -98,6 +98,9 @@ LANG=en_US.UTF-8 sudo -u test /home/test/.local/bin/tox -e nocov-posix-alldeps
 %{_bindir}/cftp3
 
 %changelog
+* Sun Feb  4 07:15:40 EST 2024 Dan Streetman <ddstreet@ieee.org> - 22.10.0-3
+- rebuild with python3.11
+
 * Fri Dec 16 2022 Sam Meluch <sammeluch@microsoft.com> - 22.10.0-2
 - Update version of tox used for package tests
 

@@ -4,7 +4,7 @@
 Summary:        YAML 1.2 loader/dumper package for Python
 Name:           python-%{srcname}
 Version:        0.16.6
-Release:        7%{?dist}
+Release:        8%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -54,6 +54,9 @@ python3 setup.py install --single-version-externally-managed --skip-build --root
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Sun Feb  4 07:15:37 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.16.6-8
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 0.16.6-7
 - Remove requirement on python3-typing (not needed for python >= 3.5)
 

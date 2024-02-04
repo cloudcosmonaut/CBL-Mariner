@@ -5,7 +5,7 @@ a "user data dir".}
 Summary:        Python module for determining appropriate platform-specific dirs
 Name:           python-%{srcname}
 Version:        2.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ pip3 install tox
 %doc README.rst CHANGES.rst
 
 %changelog
+* Sun Feb  4 07:15:32 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.0.0-3
+- rebuild with python3.11
+
 * Wed Dec 21 2021 Riken Maharjan <rmaharjan@microsoft.com> - 2.0.0-2
 - Initial CBL-Mariner import from Fedora 33 (license: MIT)
 - License verified.

@@ -2,7 +2,7 @@
 Summary:        A XML/HTML/XHTML Markup safe string for Python.
 Name:           python-markupsafe
 Version:        2.1.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -44,6 +44,9 @@ pip3 install py
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.1.3-2
+- rebuild with python3.11
+
 * Mon Nov 27 2023 Andrew Phelps <anphel@microsoft.com> - 2.1.3-1
 - Upgrade to 2.1.3
 

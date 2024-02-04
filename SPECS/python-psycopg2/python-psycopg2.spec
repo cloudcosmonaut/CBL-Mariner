@@ -2,7 +2,7 @@
 Summary:        Python-PostgreSQL Database Adapter
 Name:           python-psycopg2
 Version:        2.7.5
-Release:        8%{?dist}
+Release:        9%{?dist}
 Url:            https://pypi.python.org/pypi/psycopg2
 License:        LGPLv3+ with exceptions
 Group:          Development/Languages/Python
@@ -75,6 +75,9 @@ rm -r /home/postgres/data &>/dev/null ||:
 %doc doc
 
 %changelog
+* Sun Feb  4 07:15:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.7.5-9
+- rebuild with python3.11
+
 * Fri Dec 03 2021 Thomas Crain <thcrain@microsoft.com> - 2.7.5-8
 - Fix build with Python 3.9 using upstream patch
 

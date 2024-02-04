@@ -2,7 +2,7 @@
 Summary:        MessagePack (de)serializer.
 Name:           python-msgpack
 Version:        1.0.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -47,6 +47,9 @@ tox -e py%{python3_version_nodots}-c,py%{python3_version_nodots}-pure
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:29 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.5-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.5-1
 - Auto-upgrade to 1.0.5 - Azure Linux 3.0 - package upgrades
 

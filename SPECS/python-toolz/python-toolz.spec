@@ -28,7 +28,7 @@ suitable for most developers.
 Summary:        A functional standard library for Python
 Name:           python-%{srcname}
 Version:        0.12.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -70,6 +70,9 @@ nosetests
 %{python3_sitelib}/tlz/
 
 %changelog
+* Sun Feb  4 07:15:40 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.12.0-2
+- rebuild with python3.11
+
 * Wed Dec 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.12.0-1
 - Auto-upgrade to 0.12.0 - none
 

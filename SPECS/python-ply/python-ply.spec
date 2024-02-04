@@ -2,7 +2,7 @@
 Summary:        Python Lex & Yacc
 Name:           python-ply
 Version:        3.11
-Release:        8%{?dist}
+Release:        9%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -59,6 +59,9 @@ popd
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:32 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.11-9
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 0.7.11-6
 - Remove python2 package
 - Lint spec

@@ -2,7 +2,7 @@
 Summary:        Sphinx theme for readthedocs.org
 Name:           python-%{srcname}
 Version:        1.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT AND OFL
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -87,6 +87,9 @@ pip3 install pluggy more-itertools Sphinx readthedocs-sphinx-ext
 %{python3_sitelib}/%{srcname}*
 
 %changelog
+* Sun Feb  4 07:15:39 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.0-3
+- rebuild with python3.11
+
 * Mon Apr 04 2022 Bala <balakumaran.kannan@microsoft.com> - 1.0.0-2
 - pip install latest Sphinx for test
 

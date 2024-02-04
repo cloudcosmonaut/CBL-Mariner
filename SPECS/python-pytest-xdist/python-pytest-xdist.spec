@@ -16,7 +16,7 @@ The pytest-xdist plugin extends py.test with some unique test execution modes:
 Summary:        py.test plugin for distributed testing and loop-on-failing modes
 Name:           python-%{pypi_name}
 Version:        2.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -75,6 +75,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/xdist/
 
 %changelog
+* Sun Feb  4 07:15:35 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.5.0-2
+- rebuild with python3.11
+
 * Fri Mar 25 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.5.0-1
 - Updating to version 2.5.0.
 

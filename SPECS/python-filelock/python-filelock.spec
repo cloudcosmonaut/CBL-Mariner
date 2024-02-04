@@ -2,7 +2,7 @@
 Summary:        A platform independent file lock
 Name:           python-%{srcname}
 Version:        3.0.12
-Release:        13%{?dist}
+Release:        14%{?dist}
 License:        Unlicense
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -71,6 +71,9 @@ python%{python3_version} test.py
 %{_mandir}/man1/py-%{srcname}.1.gz
 
 %changelog
+* Sun Feb  4 07:15:24 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.0.12-14
+- rebuild with python3.11
+
 * Fri Apr 29 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 3.0.12-13
 - Updating source URL.
 

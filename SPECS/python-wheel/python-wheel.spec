@@ -3,7 +3,7 @@
 Summary:        Built-package format for Python
 Name:           python-%{pypi_name}
 Version:        0.33.6
-Release:        7%{?dist}
+Release:        8%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -102,6 +102,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} py.test3 -v --ignore build
 %endif
 
 %changelog
+* Sun Feb  4 07:15:42 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.33.6-8
+- rebuild with python3.11
+
 * Thu Mar 03 2022 Bala <balakumaran.kannan@microsoft.com> - 0.33.6-7
 - BR multiple python3 modules for PTest
 - pip3 install additional modules which not available as RPM

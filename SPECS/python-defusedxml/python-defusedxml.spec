@@ -1,7 +1,7 @@
 Summary:        XML bomb protection for Python stdlib modules
 Name:           python-defusedxml
 Version:        0.7.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        Python
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -40,6 +40,9 @@ XML bomb protection for Python stdlib modules
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:23 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.7.1-2
+- rebuild with python3.11
+
 * Mon Mar 14 2022 Thomas Crain <thcrain@microsoft.com> - 0.7.1-1
 - Upgrade to latest upstream version
 - Switch source from PyPI to GitHub

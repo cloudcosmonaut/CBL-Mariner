@@ -1,7 +1,7 @@
 Summary:        Interface for Python to call C code
 Name:           python-cffi
 Version:        1.16.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ pip3 install pytest==7.1.2
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:20 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.16.0-2
+- rebuild with python3.11
+
 * Tue Jan 23 2024 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.16.0-1
 - Auto-upgrade to 1.16.0 - Azure Linux 3.0 - package upgrades
 

@@ -1,7 +1,7 @@
 Summary:        PyNaCl is a Python binding to libsodium
 Name:           python-pynacl
 Version:        1.5.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -47,6 +47,9 @@ tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:34 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.5.0-4
+- rebuild with python3.11
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.5.0-3
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 

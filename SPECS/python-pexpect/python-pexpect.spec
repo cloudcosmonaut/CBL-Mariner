@@ -3,7 +3,7 @@
 Summary:        Unicode-aware Pure Python Expect-like module
 Name:           python-%{modname}
 Version:        4.8.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -89,6 +89,9 @@ TRAVIS=true python3 -m pytest -v -k "not spawn_uses_env"
 %{python3_sitelib}/%{modname}-*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:31 EST 2024 Dan Streetman <ddstreet@ieee.org> - 4.8.0-12
+- rebuild with python3.11
+
 * Tue Aug 09 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 4.8.0-11
 - Disabling flaky "spawn_uses_env" test.
 

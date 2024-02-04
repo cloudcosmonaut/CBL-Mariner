@@ -2,7 +2,7 @@
 Summary:        Python execution distributor
 Name:           python-%{pkgname}
 Version:        1.9.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT
 URL:            https://codespeak.net/execnet/
 Vendor:         Microsoft Corporation
@@ -53,6 +53,9 @@ LANG=en_US.UTF-8 tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:24 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.9.0-3
+- rebuild with python3.11
+
 * Wed Oct 26 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.9.0-2
 - Freezing 'pytest' test dependency to version 7.1.3.
 

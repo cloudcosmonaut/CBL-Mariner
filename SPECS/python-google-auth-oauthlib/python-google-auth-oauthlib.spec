@@ -3,7 +3,7 @@
 Summary:        Google oAuth Authentication Library
 Name:           python-%{pypi_name}
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -53,6 +53,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} pytest -v tests
 %{python3_sitelib}/google_auth_oauthlib-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Sun Feb  4 07:15:25 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.0-2
+- rebuild with python3.11
+
 * Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.0-1
 - Auto-upgrade to 1.0.0 - Azure Linux 3.0 - package upgrades
 

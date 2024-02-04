@@ -3,7 +3,7 @@
 Summary:        Sphinx extension for math in HTML via JavaScript
 Name:           python-%{pypi_name}
 Version:        1.0.1
-Release:        16%{?dist}
+Release:        17%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -60,6 +60,9 @@ python3 -m pytest
 %{python3_sitelib}/sphinxcontrib_jsmath-%{version}-py%{python3_version}.egg-info/
 
 %changelog
+* Sun Feb  4 07:15:38 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.0.1-17
+- rebuild with python3.11
+
 * Mon Jun 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.0.1-16
 - Fixing ptests.
 

@@ -2,7 +2,7 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Name:           python-pefile
 Version:        2023.2.7
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python module for working with Portable Executable files
 License:        MIT
 URL:            https://github.com/erocarrera/pefile
@@ -71,6 +71,9 @@ sed -i -e '/^#!\//, 1d' pefile.py
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:31 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2023.2.7-4
+- rebuild with python3.11
+
 * Tue May 30 2023 Vince Perri <viperri@gmail.com> - 2023.2.7-3
 - License verified.
 - Initial CBL-Mariner import from Fedora 39 (license: MIT).

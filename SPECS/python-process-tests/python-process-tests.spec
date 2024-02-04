@@ -2,7 +2,7 @@
 Summary:        Tools for testing processes
 Name:           python-%{srcname}
 Version:        2.1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -38,6 +38,9 @@ Tools for testing processes for Python 3.
 %{python3_sitelib}/process_tests*
 
 %changelog
+* Sun Feb  4 07:15:32 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.1.2-2
+- rebuild with python3.11
+
 * Mon Feb 07 2022 Thomas Crain <thcrain@microsoft.com> - 2.1.2-1
 - Upgrade to latest upstream version
 - Remove %%python3_pkgversion boilerplating

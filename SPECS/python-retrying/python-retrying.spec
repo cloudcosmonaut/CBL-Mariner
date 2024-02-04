@@ -7,7 +7,7 @@ just about anything.\
 
 Name:           python-%{pypi_name}
 Version:        1.3.3
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        General-purpose retrying library in Python
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
@@ -50,6 +50,9 @@ BuildRequires:  python3-six
 %{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Sun Feb  4 07:15:36 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.3.3-7
+- rebuild with python3.11
+
 * Wed Jul 06 2022 Sumedh Sharma <sumsharma@microsoft.com> - 1.3.3-6
 - Initial CBL-Mariner import from Fedora 36 (license: MIT)
 - Adding as run dependency for package cassandra medusa

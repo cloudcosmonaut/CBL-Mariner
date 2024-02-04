@@ -1,7 +1,7 @@
 Summary:        Library to access the metadata for a Python package
 Name:           python-importlib-metadata
 Version:        6.8.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -70,6 +70,9 @@ rm -rf .pyproject-builddir
 %doc README.rst
 
 %changelog
+* Sun Feb  4 07:15:26 EST 2024 Dan Streetman <ddstreet@ieee.org> - 6.8.0-2
+- rebuild with python3.11
+
 * Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 6.8.0-1
 - Auto-upgrade to 6.8.0 - Azure Linux 3.0 - package upgrades
 

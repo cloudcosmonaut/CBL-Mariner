@@ -1,7 +1,7 @@
 Summary:        Python C parser
 Name:           python-pycparser
 Version:        2.21
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -39,6 +39,9 @@ pycparser is a complete parser of the C language, written in pure Python using t
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.21-2
+- rebuild with python3.11
+
 * Tue Mar 15 2022 Thomas Crain <thcrain@microsoft.com> - 2.21-1
 - Upgrade to latest upstream version
 - Switch tests to be automatically discovered by the unittest module

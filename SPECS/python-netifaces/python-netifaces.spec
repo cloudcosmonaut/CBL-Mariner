@@ -1,7 +1,7 @@
 Summary:        Python library to retrieve information about network interfaces
 Name:           python-netifaces
 Version:        0.11.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -42,6 +42,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %python3 test.py
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.11.0-2
+- rebuild with python3.11
+
 * Mon Mar 14 2022 Thomas Crain <thcrain@microsoft.com> - 0.11.0-1
 - Upgrade to latest upstream version
 - Add package test

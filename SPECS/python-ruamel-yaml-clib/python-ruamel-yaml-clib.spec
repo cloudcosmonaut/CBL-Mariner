@@ -3,7 +3,7 @@
 Summary:        C version of reader, parser and emitter for ruamel.yaml derived from libyaml
 Name:           python-%{pname}
 Version:        0.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -45,6 +45,9 @@ python3 setup.py install --single-version-externally-managed --skip-build --root
 %{python3_sitearch}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Sun Feb  4 07:15:37 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.2.0-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.2.0-1
 - Auto-upgrade to 0.2.0 - Azure Linux 3.0 - package upgrades
 

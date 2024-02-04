@@ -3,7 +3,7 @@
 
 Name:           python-%{library}
 Version:        2.6.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Google Auth Python Library
 License:        ASL 2.0
 URL:            https://github.com/googleapis/google-auth-library-python
@@ -52,6 +52,9 @@ python3 setup.py install --skip-build --root=%{buildroot}
 %{python3_sitelib}/google_auth-%{version}*.pth
 
 %changelog
+* Sun Feb  4 07:15:25 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.6.6-2
+- rebuild with python3.11
+
 * Thu Apr 27 2022 Mateusz Malisz <mamalisz@microsoft.com> - 2.6.6-1
 - Update to 2.6.6
 

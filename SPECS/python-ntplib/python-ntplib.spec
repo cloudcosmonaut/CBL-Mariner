@@ -1,7 +1,7 @@
 Summary:        Python NTP library
 Name:           python-ntplib
 Version:        0.4.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -40,6 +40,9 @@ Python 3 version.
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.4.0-2
+- rebuild with python3.11
+
 * Wed Feb 09 2022 Jon Slobodzian <joslobo@microsoft.com> - 0.4.0-1
 - Upgrade to 0.4.0 for Mariner 2.0
 

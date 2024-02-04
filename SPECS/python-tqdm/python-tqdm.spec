@@ -7,7 +7,7 @@ with "tqdm(iterable)", and you are done!
 Summary:        Fast, Extensible Progress Meter
 Name:           python-%{srcname}
 Version:        4.63.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MPLv2.0 AND MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -55,6 +55,9 @@ tox -e setup.py
 
 
 %changelog
+* Sun Feb  4 07:15:40 EST 2024 Dan Streetman <ddstreet@ieee.org> - 4.63.1-3
+- rebuild with python3.11
+
 * Fri Dec 16 2022 Sam Meluch <sammeluch@microsoft.com> - 4.63.1-2
 - Update version of tox used for package tests
 

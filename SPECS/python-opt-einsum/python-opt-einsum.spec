@@ -1,7 +1,7 @@
 Summary:        Optimizing einsum function for NumPy
 Name:           python-opt-einsum
 Version:        3.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -45,5 +45,8 @@ pip3 install pytest==7.1.3
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:31 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.3.0-2
+- rebuild with python3.11
+
 * Tue Apr 04 2017 Riken Maharjan <rmaharjan@microsoft.com> - 3.3.0-1
 - Original version for CBL-Mariner. License Verified.

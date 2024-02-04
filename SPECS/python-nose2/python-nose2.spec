@@ -3,7 +3,7 @@
 Summary:        Next generation of nicer testing for Python
 Name:           python-%{srcname}
 Version:        0.10.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -70,6 +70,9 @@ PYTHONPATH=`pwd` python3 -m nose2.__main__ -v
 %{_bindir}/nose2
 
 %changelog
+* Sun Feb  4 07:15:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.10.0-3
+- rebuild with python3.11
+
 * Wed Mar 30 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.10.0-2
 - Updating dependencies.
 

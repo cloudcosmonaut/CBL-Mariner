@@ -1,7 +1,7 @@
 Summary:        Implementation of ASN.1 types and codecs in Python programming language
 Name:           python-pyasn1
 Version:        0.4.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -41,6 +41,9 @@ to be suitable for a wide range of protocols based on ASN.1 specification.
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:33 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.4.8-2
+- rebuild with python3.11
+
 * Mon Jan 03 2022 Thomas Crain <thcrain@microsoft.com> - 0.4.8-1
 - Upgrade to latest upstream version
 - Use nicer Source0

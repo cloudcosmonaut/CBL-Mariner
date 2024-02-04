@@ -1,7 +1,7 @@
 Summary:        WebOb provides objects for HTTP requests and responses.
 Name:           python-webob
 Version:        1.8.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -46,6 +46,9 @@ rm -f tests/performance_test.py
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:41 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.8.7-2
+- rebuild with python3.11
+
 * Mon Feb 07 2022 Thomas Crain <thcrain@microsoft.com> - 1.8.7-1
 - Upgrade to latest upstream version
 - Use github source tarball

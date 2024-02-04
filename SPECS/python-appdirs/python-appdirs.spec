@@ -1,7 +1,7 @@
 Summary:        Python 3 compatibility utilities
 Name:           python-appdirs
 Version:        1.4.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -42,6 +42,9 @@ PATH=%{buildroot}%{_bindir}:${PATH} \
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:19 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.4.4-2
+- rebuild with python3.11
+
 * Fri Feb 04 2022 Thomas Crain <thcrain@microsoft.com> - 1.4.4-1
 - Upgrade to latest upstream release version
 - Use github release tarball

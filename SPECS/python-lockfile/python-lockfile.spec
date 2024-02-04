@@ -1,7 +1,7 @@
 Summary:        File locking module
 Name:           python-lockfile
 Version:        0.12.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -46,6 +46,9 @@ as a demonstration of the possibilities it provides than as production-quality c
 %{python3_sitelib}/lockfile
 
 %changelog
+* Sun Feb  4 07:15:28 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.12.2-7
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 0.12.2-6
 - Add license to python3 package, fix summary
 - Remove python2 package

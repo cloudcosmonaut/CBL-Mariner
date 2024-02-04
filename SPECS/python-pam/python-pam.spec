@@ -1,7 +1,7 @@
 Summary:        Python PAM module using ctypes
 Name:           python-pam
 Version:        1.8.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -41,6 +41,9 @@ Python PAM module using ctypes
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:31 EST 2024 Dan Streetman <ddstreet@ieee.org> - 1.8.4-4
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 1.8.4-3
 - Add license to python3 package
 - Remove python2 package

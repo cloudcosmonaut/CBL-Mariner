@@ -3,7 +3,7 @@ Distribution:   Mariner
 Summary: Linux scheduler python bindings
 Name: python-schedutils
 Version: 0.6
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: GPLv2
 URL: https://rt.wiki.kernel.org/index.php/Tuna
 Source: https://cdn.kernel.org/pub/software/libs/python/%{name}/%{name}-%{version}.tar.xz
@@ -43,6 +43,9 @@ Summary: %summary
 %{python3_sitearch}/*.egg-info
 
 %changelog
+* Sun Feb  4 07:15:37 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.6-14
+- rebuild with python3.11
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 0.6-13
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 

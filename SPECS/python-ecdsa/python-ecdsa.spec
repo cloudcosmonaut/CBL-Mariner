@@ -1,7 +1,7 @@
 Summary:        ECDSA cryptographic signature library (pure python)
 Name:           python-ecdsa
 Version:        0.18.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -51,6 +51,9 @@ tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:23 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.18.0-2
+- rebuild with python3.11
+
 * Fri Oct 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.18.0-1
 - Auto-upgrade to 0.18.0 - Azure Linux 3.0 - package upgrades
 

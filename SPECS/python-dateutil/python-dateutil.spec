@@ -1,7 +1,7 @@
 Summary:        Extensions to the standard Python datetime module
 Name:           python-dateutil
 Version:        2.7.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        ASL 2.0 AND BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -43,6 +43,9 @@ The dateutil module provides powerful extensions to the datetime module availabl
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:22 EST 2024 Dan Streetman <ddstreet@ieee.org> - 2.7.3-6
+- rebuild with python3.11
+
 * Wed Oct 20 2021 Thomas Crain <thcrain@microsoft.com> - 2.7.3-5
 - Add license to python3 package
 - Remove python2 package

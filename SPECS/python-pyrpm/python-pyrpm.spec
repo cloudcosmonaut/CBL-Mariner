@@ -1,7 +1,7 @@
 Summary:        A Python library for parsing RPM spec files.
 Name:           python-pyrpm
 Version:        0.14.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -38,6 +38,9 @@ cp -r pyrpm %{buildroot}/%{python3_sitelib}/
 %{python3_sitelib}/*
 
 %changelog
+* Sun Feb  4 07:15:34 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.14.1-2
+- rebuild with python3.11
+
 * Tue Aug 15 2023 Andy Zaugg <azaugg@linkedin.com> - 0.14.1-1
 - Original version for CBL-Mariner
 - License verified

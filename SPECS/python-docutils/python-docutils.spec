@@ -1,7 +1,7 @@
 Summary:        Docutils -- Python Documentation Utilities.
 Name:           python-docutils
 Version:        0.18.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        Public Domain, PSF-2.0, BSD, GPLv3
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -97,6 +97,9 @@ PATH=%{buildroot}%{_bindir}:${PATH} \
 %{_bindir}/rst2html43.py
 
 %changelog
+* Sun Feb  4 07:15:23 EST 2024 Dan Streetman <ddstreet@ieee.org> - 0.18.1-3
+- rebuild with python3.11
+
 * Fri Feb 25 2022 Muhammad Falak <mwani@microsoft.com> - 0.18.1-2
 - Fix test path `s/test3/test/` to enable ptest
 
