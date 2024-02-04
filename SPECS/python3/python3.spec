@@ -1,34 +1,27 @@
-%global openssl_flags -DOPENSSL_NO_SSL3 -DOPENSSL_NO_SSL2 -DOPENSSL_NO_COMP
-%global __brp_python_bytecompile %{nil}
-# Automating the extraction of these alternate version strings has proven to be tricky,
-# with regards to tooling available in the toolchain build environment.
-# These will be manually maintained for the time being.
-%global majmin 3.9
-%global majmin_nodots 39
-# See Lib/ensurepip/__init__.py in Source0 for these version numbers
-%global pip_version 22.0.4
-%global setuptools_version 58.1.0
+%global VER 3.11
+%global with_gdb_hooks 1
+
+# For some reason, Azure Linux throws all of various package macros into a single package, mariner-rpm-macros...?
+%bcond macros 0
 
 Summary:        A high-level scripting language
 Name:           python3
-Version:        3.9.14
-Release:        8%{?dist}
+Version:        3.11.7
+Release:        2%{?dist}
 License:        PSF
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Programming
 URL:            https://www.python.org/
+
 Source0:        https://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
-Patch0:         cgi3.patch
-Patch1:         CVE-2015-20107.patch
-# Backport https://github.com/python/cpython/commit/069fefdaf42490f1e00243614fb5f3d5d2614b81 from 3.10 to 3.9
-Patch2:         0001-gh-95231-Disable-md5-crypt-modules-if-FIPS-is-enable.patch
-Patch3:         CVE-2022-37454.patch
-Patch4:         CVE-2022-45061.patch
-Patch5:         CVE-2022-42919.patch
-Patch6:         CVE-2023-24329.patch
-# Patch for setuptools, resolved in 65.5.1
-Patch1000:      CVE-2022-40897.patch
+
+%if %{with macros}
+Source1:        macros.python
+%endif
+
+Patch0: cgi3.patch
+Patch1: use-HMAC-SHA256-in-FIPS-mode.patch
 
 BuildRequires:  bzip2-devel
 BuildRequires:  expat-devel >= 2.1.0
@@ -38,7 +31,9 @@ BuildRequires:  openssl-devel
 BuildRequires:  pkg-config >= 0.28
 BuildRequires:  readline-devel
 BuildRequires:  sqlite-devel
+BuildRequires:  util-linux-devel
 BuildRequires:  xz-devel
+
 Requires:       ncurses
 Requires:       openssl
 Requires:       %{name}-libs = %{version}-%{release}
@@ -49,13 +44,12 @@ Provides:       python-sqlite
 Provides:       python(abi)
 Provides:       %{_bindir}/python
 Provides:       /bin/python
-Provides:       /bin/python3
-Provides:       %{name}-docs = %{version}-%{release}
-Provides:       python%{majmin} = %{version}-%{release}
-Provides:       python%{majmin_nodots} = %{version}-%{release}
-%if %{with_check}
+Provides:       /bin/%{name}
+
+%if 0%{?with_check}
 BuildRequires:  iana-etc
 BuildRequires:  tzdata
+BuildRequires:  curl-devel
 %endif
 
 %description
@@ -68,15 +62,15 @@ code. It is incompatible with Python 2.x releases.
 Summary:        The libraries for python runtime
 Group:          Applications/System
 Requires:       bzip2-libs
+Requires:       (coreutils or coreutils-selinux)
 Requires:       expat >= 2.1.0
 Requires:       libffi >= 3.0.13
 Requires:       ncurses
 Requires:       sqlite-libs
+Requires:       util-linux-libs
 # python3-xml was provided as a separate package in Mariner 1.0
 # We fold this into the libs subpackage in Mariner 2.0
 Provides:       %{name}-xml = %{version}-%{release}
-Provides:       python%{majmin}-libs = %{version}-%{release}
-Provides:       python%{majmin_nodots}-libs = %{version}-%{release}
 
 %description    libs
 The python interpreter can be embedded into applications wanting to
@@ -88,8 +82,6 @@ Summary:        Python module interface for NCurses Library
 Group:          Applications/System
 Requires:       ncurses
 Requires:       %{name}-libs = %{version}-%{release}
-Provides:       python%{majmin}-curses = %{version}-%{release}
-Provides:       python%{majmin_nodots}-curses = %{version}-%{release}
 
 %description    curses
 The python3-curses package provides interface for ncurses library.
@@ -99,9 +91,9 @@ Summary:        The libraries and header files needed for Python development.
 Group:          Development/Libraries
 Requires:       expat-devel >= 2.1.0
 Requires:       %{name} = %{version}-%{release}
-Requires:       %{name}-setuptools = %{version}-%{release}
-Provides:       python%{majmin}-devel = %{version}-%{release}
-Provides:       python%{majmin_nodots}-devel = %{version}-%{release}
+%if %{with macros}
+Requires:       %{name}-macros = %{version}-%{release}
+%endif
 
 %description    devel
 The Python programming language's interpreter can be extended with
@@ -118,8 +110,6 @@ documentation.
 Summary:        A collection of development tools included with Python.
 Group:          Development/Tools
 Requires:       %{name} = %{version}-%{release}
-Provides:       python%{majmin}-tools = %{version}-%{release}
-Provides:       python%{majmin_nodots}-tools = %{version}-%{release}
 
 %description    tools
 The Python package includes several development tools that are used
@@ -129,8 +119,6 @@ to build python programs.
 Summary:        The PyPA recommended tool for installing Python packages.
 Group:          Development/Tools
 Requires:       %{name} = %{version}-%{release}
-Provides:       python3dist(pip) = %{version}-%{release}
-Provides:       python%{majmin}dist(pip) = %{version}-%{release}
 BuildArch:      noarch
 
 %description    pip
@@ -140,8 +128,7 @@ The PyPA recommended tool for installing Python packages.
 Summary:        Download, build, install, upgrade, and uninstall Python packages.
 Group:          Development/Tools
 Requires:       %{name} = %{version}-%{release}
-Provides:       python3dist(setuptools) = %{version}-%{release}
-Provides:       python%{majmin}dist(setuptools) = %{version}-%{release}
+Provides:       python%{VER}dist(setuptools)
 BuildArch:      noarch
 
 %description    setuptools
@@ -151,178 +138,204 @@ setuptools is a collection of enhancements to the Python distutils that allow yo
 Summary:        Regression tests package for Python.
 Group:          Development/Tools
 Requires:       %{name} = %{version}-%{release}
-Provides:       python%{majmin}-test = %{version}-%{release}
-Provides:       python%{majmin_nodots}-test = %{version}-%{release}
 
 %description test
 The test package contains all regression tests for Python as well as the modules test.support and test.regrtest. test.support is used to enhance your tests while test.regrtest drives the testing suite.
 
-%prep
-# We need to patch setuptools later, so manually manage patches with -N
-%autosetup -p1 -n Python-%{version} -N
+%if %{with macros}
+%package        macros
+Summary:        Macros for Python packages.
+Group:          Development/Tools
+BuildArch:      noarch
 
-# Ideally we would use '%%autopatch -p1 -M 999', but unfortunately the GitHub CI pipelines use a very old version of rpm which doesn't support it.
-# We use the CI to validate the toolchain manifests, which means we need to parse this .spec file
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
+%description    macros
+This package contains the unversioned Python RPM macros, that most
+implementations should rely on.
+You should not need to install this package manually as the various
+python-devel packages require it. So install a python-devel package instead.
+%endif
+
+%prep
+%autosetup -p1 -n Python-%{version}
 
 %build
-# Remove GCC specs and build environment linker scripts
-# from the flags used when compiling outside of an RPM environment
-# https://fedoraproject.org/wiki/Changes/Python_Extension_Flags
-export CFLAGS="%{extension_cflags} %{openssl_flags}"
-export CFLAGS_NODIST="%{build_cflags} %{openssl_flags}"
-export CXXFLAGS="%{extension_cxxflags} %{openssl_flags}"
-export LDFLAGS="%{extension_ldflags}"
-export LDFLAGS_NODIST="%{build_ldflags}"
-export OPT="%{extension_cflags} %{openssl_flags}"
+export OPT="${CFLAGS}"
+if [ %{_host} != %{_build} ]; then
+  ln -sfv %{name} %{_bindir}/python
+  export ac_cv_buggy_getaddrinfo=no
+  export ac_cv_file__dev_ptmx=yes
+  export ac_cv_file__dev_ptc=no
+fi
 
 %configure \
     --enable-shared \
-    --with-platlibdir=%{_lib} \
     --with-system-expat \
     --with-system-ffi \
+    --with-lto \
+    --enable-optimizations \
     --with-dbmliborder=gdbm:ndbm \
-    --with-ensurepip=no \
-    --enable-optimizations
+    --with-ssl-default-suites=openssl \
+    --with-builtin-hashlib-hashes=blake2
+
 %make_build
 
 %install
-%make_install
+%make_install %{?_smp_mflags}
 %{_fixperms} %{buildroot}/*
 
-# Bootstrap `pip3` which casues ptest build failure.
-# The manual installation of pip in the RPM buildroot requires pip
-# to be already present in the chroot.
-# For toolchain builds, `pip3` requirement is staisfied by raw-toolchain's
-# version of python, so it does not do anything.
-# For builds other than toolchain, we would require pip to be present.
-# The line below install pip in the build chroot using the recently
-# compiled python3.
-# NOTE: This is a NO-OP for the toolchain build.
-python3 Lib/ensurepip
-
-# Installing pip/setuptools via ensurepip fails in our toolchain.
-# The versions of these tools from the raw toolchain are detected,
-# and install fails. We will install these two bundled wheels manually.
-# https://github.com/pypa/pip/issues/3063
-# https://bugs.python.org/issue31916
-pushd Lib/ensurepip/_bundled
-pip3 install --no-cache-dir --no-index --ignore-installed \
-    --root %{buildroot} \
-    setuptools-%{setuptools_version}-py3-none-any.whl \
-    pip-%{pip_version}-py3-none-any.whl
-popd
-
-# Manually patch CVE-2022-40897 which is a bundled wheel. We can only update the source code after install
-echo 'Patching CVE-2022-40897 in bundled wheel file %{_libdir}/python%{majmin}/site-packages/setuptools/package_index.py'
-patch %{buildroot}%{_libdir}/python%{majmin}/site-packages/setuptools/package_index.py < %{PATCH1000}
-
-# Windows executables get installed by pip and setuptools- we don't need these.
-find %{buildroot}%{_libdir}/python%{majmin}/site-packages -name '*.exe' -delete -print
-
-# Install pathfix.py to bindir
-cp -p Tools/scripts/pathfix.py %{buildroot}%{_bindir}/pathfix%{majmin}.py
-ln -s ./pathfix%{majmin}.py %{buildroot}%{_bindir}/pathfix.py
-
 # Remove unused stuff
-find %{buildroot}%{_libdir} -name '*.pyc' -delete
-find %{buildroot}%{_libdir} -name '*.pyo' -delete
-find %{buildroot}%{_libdir} -name '*.o' -delete
+find %{buildroot}%{_libdir} -type f \( -name '*.pyc' -o \
+                                       -name '*.pyo' -o \
+                                       -name '*.exe' -o \
+                                       -name '*.o' -o \
+                                       -name '*__pycache__' \) -delete
 rm %{buildroot}%{_bindir}/2to3
-rm -rf %{buildroot}%{_bindir}/__pycache__
+%if %{with macros}
+mkdir -p %{buildroot}%{_rpmmacrodir}
+install -m 644 %{SOURCE1} %{buildroot}%{_rpmmacrodir}
+%endif
+cp -p Tools/scripts/pathfix.py %{buildroot}%{_bindir}/pathfix%{VER}.py
+ln -s ./pathfix%{VER}.py %{buildroot}%{_bindir}/pathfix.py
 
-# %check
-# make  %{?_smp_mflags} test
+%if 0%{?__debug_package}
+%if 0%{?with_gdb_hooks}
+  DirHoldingGdbPy=%{_libdir}/debug%{_libdir}
+  mkdir -p %{buildroot}$DirHoldingGdbPy
+  PathOfGdbPy=$DirHoldingGdbPy/libpython%{VER}.so.1.0-%{version}-%{release}.%{_arch}.debug-gdb.py
+  cp Tools/gdb/libpython.py %{buildroot}$PathOfGdbPy
+%endif
+%endif
 
-%ldconfig_scriptlets
+%if 0%{?with_check}
+%check
+make %{?_smp_mflags} test
+%endif
+
+%post
+ln -sfv %{_bindir}/%{name} %{_bindir}/python
+/sbin/ldconfig
+
+%postun
+#we are handling the uninstall rpm
+#in case of upgrade/downgrade we dont need any action
+#as python will still be linked to python3
+if [ $1 -eq 0 ] ; then
+  if [ -f "%{_bindir}/python2" ]; then
+    ln -sfv %{_bindir}/python2 %{_bindir}/python
+  else
+    rm -f %{_bindir}/python
+  fi
+fi
+/sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}/*
 
 %files
 %defattr(-, root, root)
-%license LICENSE
-%doc README.rst
 %{_bindir}/pydoc*
-%{_bindir}/python3
-%{_bindir}/python%{majmin}
+%{_bindir}/%{name}
+%{_bindir}/python%{VER}
 %{_mandir}/*/*
 
-%dir %{_libdir}/python%{majmin}
-%dir %{_libdir}/python%{majmin}/site-packages
+%dir %{_libdir}/python%{VER}
+%{_libdir}/python%{VER}/site-packages/README.txt
 
-%exclude %{_libdir}/python%{majmin}/ctypes/test
-%exclude %{_libdir}/python%{majmin}/distutils/tests
-%exclude %{_libdir}/python%{majmin}/sqlite3/test
-%exclude %{_libdir}/python%{majmin}/idlelib/idle_test
-%exclude %{_libdir}/python%{majmin}/test
-%exclude %{_libdir}/python%{majmin}/lib-dynload/_ctypes_test.*.so
+%exclude %{_libdir}/python%{VER}/ctypes/test
+%exclude %{_libdir}/python%{VER}/distutils/tests
+%exclude %{_libdir}/python%{VER}/idlelib/idle_test
+%exclude %{_libdir}/python%{VER}/test
+%exclude %{_libdir}/python%{VER}/lib-dynload/_ctypes_test.*.so
 
 %files libs
-%defattr(-,root,root)
-%license LICENSE
-%doc README.rst
 %{_libdir}/libpython3.so
-%{_libdir}/libpython%{majmin}.so.1.0
-%{_libdir}/python%{majmin}
-%{_libdir}/python%{majmin}/site-packages/README.txt
-%exclude %{_libdir}/python%{majmin}/site-packages/
-%exclude %{_libdir}/python%{majmin}/ctypes/test
-%exclude %{_libdir}/python%{majmin}/distutils/tests
-%exclude %{_libdir}/python%{majmin}/sqlite3/test
-%exclude %{_libdir}/python%{majmin}/idlelib/idle_test
-%exclude %{_libdir}/python%{majmin}/test
-%exclude %{_libdir}/python%{majmin}/lib-dynload/_ctypes_test.*.so
-%exclude %{_libdir}/python%{majmin}/curses
-%exclude %{_libdir}/python%{majmin}/lib-dynload/_curses*.so
+%{_libdir}/libpython%{VER}.so.1.0
+%defattr(-, root, root)
+%{_libdir}/python%{VER}
+%exclude %{_libdir}/python%{VER}/lib2to3
+%exclude %{_libdir}/python%{VER}/site-packages/
+%exclude %{_libdir}/python%{VER}/ctypes/test
+%exclude %{_libdir}/python%{VER}/distutils/tests
+%exclude %{_libdir}/python%{VER}/idlelib/idle_test
+%exclude %{_libdir}/python%{VER}/test
+%exclude %{_libdir}/python%{VER}/lib-dynload/_ctypes_test.*.so
+%exclude %{_libdir}/python%{VER}/curses
+%exclude %{_libdir}/python%{VER}/lib-dynload/_curses*.so
 
-%files curses
-%{_libdir}/python%{majmin}/curses/*
-%{_libdir}/python%{majmin}/lib-dynload/_curses*.so
+%files  curses
+%defattr(-, root, root, 755)
+%{_libdir}/python%{VER}/curses/*
+%{_libdir}/python%{VER}/lib-dynload/_curses*.so
 
 %files devel
-%defattr(-,root,root)
+%defattr(-, root, root)
 %{_includedir}/*
-%{_libdir}/pkgconfig/python-%{majmin}.pc
-%{_libdir}/pkgconfig/python-%{majmin}-embed.pc
+%{_libdir}/libpython%{VER}.so
+%{_libdir}/pkgconfig/python-%{VER}.pc
 %{_libdir}/pkgconfig/%{name}.pc
-%{_libdir}/pkgconfig/%{name}-embed.pc
-%{_libdir}/libpython%{majmin}.so
-%{_bindir}/python3-config
-%{_bindir}/python%{majmin}-config
 %{_bindir}/pathfix.py
-%{_bindir}/pathfix%{majmin}.py
-%doc Misc/README.valgrind Misc/valgrind-python.supp Misc/gdbinit
+%{_bindir}/pathfix%{VER}.py
+%{_bindir}/%{name}-config
+%{_bindir}/python%{VER}-config
+%{_libdir}/pkgconfig/python-%{VER}-embed.pc
+%{_libdir}/pkgconfig/%{name}-embed.pc
+
 %exclude %{_bindir}/2to3*
 %exclude %{_bindir}/idle*
 
 %files tools
-%defattr(-,root,root,755)
-%doc Tools/README
-%{_libdir}/python%{majmin}/lib2to3
-%{_bindir}/2to3-%{majmin}
+%defattr(-, root, root, 755)
+%{_libdir}/python%{VER}/lib2to3
+%{_bindir}/2to3-%{VER}
 %exclude %{_bindir}/idle*
 
 %files pip
-%defattr(-,root,root,755)
-%{_libdir}/python%{majmin}/site-packages/pip/*
-%{_libdir}/python%{majmin}/site-packages/pip-%{pip_version}.dist-info/*
+%defattr(-, root, root, 755)
+%{_libdir}/python%{VER}/site-packages/pip/*
 %{_bindir}/pip*
 
 %files setuptools
-%defattr(-,root,root,755)
-%{_libdir}/python%{majmin}/site-packages/pkg_resources/*
-%{_libdir}/python%{majmin}/site-packages/setuptools/*
-%{_libdir}/python%{majmin}/site-packages/_distutils_hack/
-%{_libdir}/python%{majmin}/site-packages/setuptools-%{setuptools_version}.dist-info/*
+%defattr(-, root, root, 755)
+%{_libdir}/python%{VER}/site-packages/distutils-precedence.pth
+%{_libdir}/python%{VER}/site-packages/_distutils_hack/*
+%{_libdir}/python%{VER}/site-packages/pkg_resources/*
+%{_libdir}/python%{VER}/site-packages/setuptools/*
+%{_libdir}/python%{VER}/site-packages/setuptools-*.dist-info/*
 
 %files test
-%{_libdir}/python%{majmin}/test/*
+%defattr(-, root, root, 755)
+%{_libdir}/python%{VER}/test/*
+
+%if %{with macros}
+%files macros
+%defattr(-, root, root, 755)
+%{_rpmmacrodir}/macros.python
+%endif
 
 %changelog
+* Sun Feb  4 04:51:30 EST 2024 Dan Streetman <ddstreet@ieee.org> - 3.11.7-2
+- update to python3.11
+
+* Mon Dec 11 2023 Prashant S Chauhan <psinghchauha@vmware.com> 3.11.7-1
+- Update to 3.11.7
+* Sun Nov 19 2023 Shreenidhi Shedi <sshedi@vmware.com> 3.11.0-9
+- Bump version as a part of openssl upgrade
+* Fri Sep 08 2023 Prashant S Chauhan <psinghchauha@vmware.com> 3.11.0-8
+- Add patch for multiprocessing library to use sha256  in FIPS mode
+* Fri Jun 09 2023 Nitesh Kumar <kunitesh@vmware.com> 3.11.0-7
+- Bump version as a part of ncurses upgrade to v6.4
+* Wed Jan 25 2023 Shreenidhi Shedi <sshedi@vmware.com> 3.11.0-6
+- Fix requires
+* Thu Jan 12 2023 Shreenidhi Shedi <sshedi@vmware.com> 3.11.0-5
+- Disable builtin hashes and use openssl backend for the same
+* Wed Jan 11 2023 Oliver Kurth <okurth@vmware.com> 3.11.0-4
+- bump release as part of sqlite update
+* Fri Jan 06 2023 Oliver Kurth <okurth@vmware.com> 3.11.0-3
+- bump version as a part of xz upgrade
+* Tue Dec 20 2022 Guruswamy Basavaiah <bguruswamy@vmware.com> 3.11.0-2
+- Bump release as a part of readline upgrade
+* Mon Sep 19 2022 Prashant S Chauhan <psinghchauha@vmware.com> 3.11.0-1
+- Update to 3.11
 * Wed Oct 11 2023 Amrita Kohli <amritakohli@microsoft.com> - 3.9.14-8
 - Patch for CVE-2023-24329
 
@@ -385,6 +398,37 @@ rm -rf %{buildroot}%{_bindir}/__pycache__
 - Remove irrelevant patches
 - License verified
 
+* Fri Aug 12 2022 Shreenidhi Shedi <sshedi@vmware.com> 3.9.1-9
+- Bump version as a part of sqlite upgrade
+* Wed Aug 10 2022 Piyush Gupta <gpiyush@vmware.com> 3.9.1-8
+- Handle EPERM error in crypt.py
+* Tue May 10 2022 Shreenidhi Shedi <sshedi@vmware.com> 3.9.1-7
+- Bump version as a part of libffi upgrade
+* Wed Feb 02 2022 Shreenidhi Shedi <sshedi@vmware.com> 3.9.1-6
+- Package python gdb hooks script
+* Sat Aug 21 2021 Satya Naga Vasamsetty <svasamsetty@vmware.com> 3.9.1-5
+- Bump up release for openssl
+* Mon Aug 16 2021 Shreenidhi Shedi <sshedi@vmware.com> 3.9.1-4
+- Fix python rpm macros
+* Sat Mar 27 2021 Tapas Kundu <tkundu@vmware.com> 3.9.1-3
+- Remove packaging exe files in python3-pip
+* Sat Jan 16 2021 Shreenidhi Shedi <sshedi@vmware.com> 3.9.1-2
+- Fix build with new rpm
+* Fri Jan 08 2021 Tapas Kundu <tkundu@vmware.com> 3.9.1-1
+- Update to 3.9.1
+* Tue Oct 13 2020 Tapas Kundu <tkundu@vmware.com> 3.9.0-1
+- Update to 3.9.0
+* Wed Sep 30 2020 Gerrit Photon <photon-checkins@vmware.com> 3.8.6-1
+- Automatic Version Bump
+* Tue Sep 29 2020 Satya Naga Vasamsetty <svasamsetty@vmware.com> 3.8.5-4
+- openssl 1.1.1
+* Sun Aug 16 2020 Tapas Kundu <tkundu@vmware.com> 3.8.5-3
+- Package %{_libdir}/python3.8/lib2to3 in tools
+* Thu Aug 13 2020 Tapas Kundu <tkundu@vmware.com> 3.8.5-2
+- Add macros subpackage
+* Sun Jul 26 2020 Tapas Kundu <tkundu@vmware.com> 3.8.5-1
+- Updated to 3.8.5 release
+
 * Fri May 07 2021 Daniel Burgener <daburgen@microsoft.com> 3.7.10-3
 - Remove coreutils dependency to remove circular dependency with libselinux
 
@@ -437,6 +481,25 @@ rm -rf %{buildroot}%{_bindir}/__pycache__
 * Wed Jun 10 2020 Paul Monson <paulmon@microsoft.com> 3.7.7-1
 - Update to Python 3.7.7 to fix CVEs
 
+* Fri Jul 17 2020 Tapas Kundu <tkundu@vmware.com> 3.7.5-3
+- symlink python to python3
+* Fri May 01 2020 Alexey Makhalov <amakhalov@vmware.com> 3.7.5-2
+- -setuptools requires -xml.
+* Sat Dec 07 2019 Tapas Kundu <tkundu@vmware.com> 3.7.5-1
+- Updated to 3.7.5 release
+- Linked /usr/bin/python to python3.
+- While uninstalling link to python2 if available.
+* Tue Nov 26 2019 Alexey Makhalov <amakhalov@vmware.com> 3.7.4-5
+- Cross compilation support
+* Tue Nov 05 2019 Tapas Kundu <tkundu@vmware.com> 3.7.4-4
+- Fix for CVE-2019-17514
+* Thu Oct 24 2019 Shreyas B. <shreyasb@vmware.com> 3.7.4-3
+- Fixed makecheck errors.
+* Wed Oct 23 2019 Tapas Kundu <tkundu@vmware.com> 3.7.4-2
+- Fix conflict of libpython3.so
+* Thu Oct 17 2019 Tapas Kundu <tkundu@vmware.com> 3.7.4-1
+- Updated to patch release 3.7.4
+- Fix CVE-2019-16935
 * Thu May 21 2020 Suresh Babu Chalamalasetty <schalam@microsoft.com> 3.7.3-10
 - Fix CVE-2019-16056.
 
@@ -461,6 +524,8 @@ rm -rf %{buildroot}%{_bindir}/__pycache__
 * Tue Sep 03 2019 Mateusz Malisz <mamalisz@microsoft.com> 3.7.3-3
 - Initial CBL-Mariner import from Photon (license: Apache2).
 
+* Wed Sep 11 2019 Tapas Kundu <tkundu@vmware.com> 3.7.3-3
+- Fix CVE-2019-16056
 * Mon Jun 17 2019 Tapas Kundu <tkundu@vmware.com> 3.7.3-2
 - Fix for CVE-2019-10160
 
