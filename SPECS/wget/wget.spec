@@ -1,23 +1,15 @@
-%if (0%{?fedora} && 0%{?fedora} < 40) || (0%{?rhel} && 0%{?rhel} < 10)
-%bcond as_wget 0
-%else
 %bcond as_wget 1
-%endif
-
 %global somajor 2
 
 Name:           wget2
 Version:        2.1.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        An advanced file and recursive website downloader
 
 # Documentation is GFDL
 License:        GPL-3.0-or-later AND LGPL-3.0-or-later AND GFDL-1.3-or-later
 URL:            https://gitlab.com/gnuwget/wget2
 Source0:        https://ftp.gnu.org/gnu/wget/%{name}-%{version}.tar.gz
-Source1:        https://ftp.gnu.org/gnu/wget/%{name}-%{version}.tar.gz.sig
-# key 08302DB6A2670428
-Source2:        tim.ruehsen-keyring.asc
 
 # Backports from upstream
 ## Fix behavior for downloading to stdin (rhbz#2257700, gl#gnuwget/wget2#651)
@@ -35,40 +27,22 @@ BuildRequires:  make
 # Documentation build requirements
 BuildRequires:  doxygen
 BuildRequires:  git-core
-%if ! 0%{?rhel}
-BuildRequires:  pandoc
-%endif
 
 # Wget2 build requirements
 BuildRequires:  bzip2-devel
 BuildRequires:  python3
-BuildRequires:  rsync
 BuildRequires:  tar
 BuildRequires:  texinfo
 BuildRequires:  pkgconfig(gnutls)
 BuildRequires:  pkgconfig(gpgme)
 BuildRequires:  pkgconfig(libbrotlidec)
 ## Not available yet
-#BuildRequires:  pkgconfig(libhsts)
-BuildRequires:  pkgconfig(libidn2) >= 0.14.0
-## Not available yet
 #BuildRequires:  pkgconfig(liblz)
 BuildRequires:  pkgconfig(liblzma)
-BuildRequires:  pkgconfig(libmicrohttpd)
 BuildRequires:  pkgconfig(libnghttp2)
 BuildRequires:  pkgconfig(libpcre2-8)
-BuildRequires:  pkgconfig(libpsl)
 BuildRequires:  pkgconfig(libzstd)
 BuildRequires:  pkgconfig(zlib)
-
-%if ! 0%{?rhel}
-# Test suite
-BuildRequires:  lcov
-BuildRequires:  lzip
-%endif
-
-# For gpg signature verification
-BuildRequires:  gnupg2
 
 Provides:       webclient
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
@@ -120,17 +94,14 @@ the system provider of wget.
 %endif
 
 %prep
-%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup -p1
 
 
 %build
 %configure --disable-static
-%if ! 0%{?rhel}
 # Remove RPATH, rely on default -Wl,--enable-new-dtags in Fedora.
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-%endif
 %make_build
 
 
@@ -138,10 +109,8 @@ sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 %make_install
 %find_lang %{name}
 
-%if 0%{?rhel}
 # tarball includes a pre-built manpage
 install -D -m0644 -t %{buildroot}%{_mandir}/man1/ docs/man/man1/wget2.1
-%endif
 
 # Purge all libtool archives
 find %{buildroot} -type f -name "*.la" -delete -print
@@ -184,6 +153,11 @@ echo ".so man1/%{name}.1" > %{buildroot}%{_mandir}/man1/wget.1
 
 
 %changelog
+* Mon Feb 05 2024 Muhammad Falak <mwanin@microsoft.com> - 2.1.0-8
+- Switch wget from 1.x to 2.x
+- Initial CBL-Mariner import from Fedora 40 (license: MIT).
+- License Verified
+
 * Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
@@ -230,5 +204,6 @@ echo ".so man1/%{name}.1" > %{buildroot}%{_mandir}/man1/wget.1
 
 * Wed Apr  1 2020 Anna Khaitovich <akhaitov@redhat.com> - 1.99.2-1
 - Initial package
+
 
 
