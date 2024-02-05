@@ -1,4 +1,4 @@
-%bcond as_wget 1
+%global as_wget 1
 %global somajor 2
 
 Name:           wget2
@@ -75,7 +75,7 @@ Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Development libraries and headers needed for building applications to
 use functionality from GNU Wget2.
 
-%if %{with as_wget}
+%if %{as_wget}
 %package wget
 Summary:        %{name} shim to provide wget
 Requires:       wget2%{?_isa} = %{version}-%{release}
@@ -118,7 +118,7 @@ find %{buildroot} -type f -name "*.la" -delete -print
 # Delete useless noinstall binary
 rm -v %{buildroot}%{_bindir}/%{name}_noinstall
 
-%if %{with as_wget}
+%if %{as_wget}
 ln -sr %{buildroot}%{_bindir}/%{name} %{buildroot}%{_bindir}/wget
 # Link wget(1) to wget2(1)
 echo ".so man1/%{name}.1" > %{buildroot}%{_mandir}/man1/wget.1
@@ -145,7 +145,7 @@ echo ".so man1/%{name}.1" > %{buildroot}%{_mandir}/man1/wget.1
 %{_libdir}/pkgconfig/libwget.pc
 %{_mandir}/man3/libwget*.3*
 
-%if %{with as_wget}
+%if %{as_wget}
 %files wget
 %{_bindir}/wget
 %{_mandir}/man1/wget.1*
@@ -155,6 +155,7 @@ echo ".so man1/%{name}.1" > %{buildroot}%{_mandir}/man1/wget.1
 %changelog
 * Mon Feb 05 2024 Muhammad Falak <mwanin@microsoft.com> - 2.1.0-8
 - Switch wget from 1.x to 2.x
+- Add a provides for wget
 - Initial CBL-Mariner import from Fedora 40 (license: MIT).
 - License Verified
 
