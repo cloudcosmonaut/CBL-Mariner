@@ -1647,8 +1647,8 @@
         "type": "other",
         "other": {
           "name": "checkpolicy",
-          "version": "3.2",
-          "downloadUrl": "https://github.com/SELinuxProject/selinux/releases/download/3.2/checkpolicy-3.2.tar.gz"
+          "version": "3.6",
+          "downloadUrl": "https://github.com/SELinuxProject/selinux/releases/download/3.6/checkpolicy-3.6.tar.gz"
         }
       }
     },
@@ -10791,8 +10791,8 @@
         "type": "other",
         "other": {
           "name": "libselinux",
-          "version": "3.5",
-          "downloadUrl": "https://github.com/SELinuxProject/selinux/releases/download/3.5/libselinux-3.5.tar.gz"
+          "version": "3.6",
+          "downloadUrl": "https://github.com/SELinuxProject/selinux/releases/download/3.6/libselinux-3.6.tar.gz"
         }
       }
     },
@@ -10811,8 +10811,8 @@
         "type": "other",
         "other": {
           "name": "libsepol",
-          "version": "3.5",
-          "downloadUrl": "https://github.com/SELinuxProject/selinux/archive/refs/tags/3.5.tar.gz"
+          "version": "3.6",
+          "downloadUrl": "https://github.com/SELinuxProject/selinux/releases/download/3.6/libsepol-3.6.tar.gz"
         }
       }
     },
