@@ -1,8 +1,8 @@
-%define libsepolver 3.5-1
-%define libselinuxver 3.5-1
+%define libsepolver 3.6-1
+%define libselinuxver 3.6-1
 Summary:        SELinux binary policy manipulation library
 Name:           libsemanage
-Version:        3.5
+Version:        3.6
 Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
@@ -107,6 +107,9 @@ ln -sf  %{_libdir}/libsemanage.so.2 %{buildroot}/%{_libdir}/libsemanage.so
 %{_libexecdir}/selinux/semanage_migrate_store
 
 %changelog
+* Tue Feb 06 2024 Cameron Baird <cameronbaird@microsoft.com> - 3.6-1
+- Upgrade to version 3.6
+
 * Fri Nov 24 2023 Andrew Phelps <anphel@microsoft.com> - 3.5-1
 - Upgrade to version 3.5
 
