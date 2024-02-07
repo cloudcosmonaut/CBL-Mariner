@@ -131,6 +131,8 @@ Version:        9.0.0
 Release:        1%{?dist}
 # Add license:
 License:        epl-1.0 AND cpl-1.0 AND bsd-3-clause AND mit AND gpl-3.0-or-later WITH bison-exception-2.2 AND apache-1.1 AND lgpl-2.0-or-later WITH libtool-exception AND smlnj AND hpnd-uc
+Vendor:         Microsoft Corporation
+Distribution:   Azure Linux
 URL:            http://www.graphviz.org/
 #Source0:        https://gitlab.com/%%{name}/%%{name}/-/archive/%%{version}/%%{name}-%%{version}.tar.bz2
 Source0:        https://gitlab.com/api/v4/projects/%{name}%2F%{name}/packages/generic/%{name}-releases/%{version}/%{name}-%{version}.tar.xz
@@ -839,7 +841,7 @@ php --no-php-ini \
 %endif
 
 %changelog
-* Tue Feb 06 2024 Sean Dougherty <sdougherty@microsoft.com> - 9.0.0-1
+* Wed Feb 07 2024 Sean Dougherty <sdougherty@microsoft.com> - 9.0.0-1
 - Imported spec file from Fedora 40 (license: MIT)
 - For Mariner 3.0 upgrade: merged fedora spec with Mariner 2.0 spec to upgrade graphviz from 2.4* to 9.0
 - License Verified
@@ -1268,8 +1270,11 @@ php --no-php-ini \
   swig4-updated-language-options patches (all upstreamed)
 - Simplified python bindings build process
 
-* Mon Feb 05 2024 Sean Dougherty <sdougherty@microsoft.com> - 2.42.4-9
+* Wed Feb 07 2024 Sean Dougherty <sdougherty@microsoft.com> - 9.0.0-1
 - Moving to using Fedora 40 spec (License: MIT) for guidance, importing changelog above
+
+* Tue Feb 06 2024 Dan Streetman <ddstreet@ieee.org> - 2.42.4-10
+- add build dep gc-devel
 
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.42.4-9
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
