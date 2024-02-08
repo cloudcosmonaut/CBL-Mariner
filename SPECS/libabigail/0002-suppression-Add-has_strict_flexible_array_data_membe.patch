@@ -1,0 +1,708 @@
+From 9923fb345b7652b5d4beb5230ee3ea11199fe4f8 Mon Sep 17 00:00:00 2001
+From: Dodji Seketeli <dodji@redhat.com>
+Date: Fri, 3 Nov 2023 17:47:57 -0700
+Subject: [PATCH 2/2] suppression: Add
+ "has_strict_flexible_array_data_member_conversion" property
+
+In the past, it was common to have a "fake flex array" at the end of a
+structure. Like this:
+
+Nowadays, with improved compiler support, it's more common to use a real
+flex array. As this is a common change which changes ABI representation
+in a compatible way, we should have a suppression for it.
+
+For example, if you have a change like this:
+
+struct foo
+{
+  int x;
+  int flex[1];
+};
+
+...
+
+struct foo
+{
+  int x;
+  int flex[];
+};
+
+abidiff reports:
+
+  [C] 'struct foo' changed:
+    type size changed from 64 to 32 (in bits)
+    1 data member change:
+      type of 'int flex[1]' changed:
+        type name changed from 'int[1]' to 'int[]'
+        array type size changed from 32 to 'unknown'
+        array type subrange 1 changed length from 1 to 'unknown'
+
+With a new has_strict_flexible_array_data_member_conversion property,
+users can specify a suppression which stops abidiff from emitting
+this diff for any "fake" flex arrays being converted to real ones:
+
+[suppress_type]
+  type_kind = struct
+  has_size_change = true
+  has_strict_flexible_array_data_member_conversion = true
+
+	* include/abg-comp-filter.h (has_strict_fam_conversion): Declare
+	new functions.
+	* include/abg-fwd.h
+	(ir::has_fake_flexible_array_data_member): Declare new accessor
+	functions.
+	* include/abg-suppression.h
+	(type_suppression::{,set_}has_strict_fam_conversion): Declare new
+	accessor functions.
+	* src/abg-comp-filter.cc (has_strict_fam_conversion): Define new
+	functions.
+	* src/abg-ir.cc
+	(ir::has_fake_flexible_array_data_member): Define new accessor
+	functions.
+	* src/abg-suppression-priv.h
+	(type_suppression::priv::has_strict_fam_conv_): Define new
+	data member.
+	* src/abg-suppression.cc
+	(type_suppression::{,set_}has_strict_fam_conversion): Define new
+	accessor functions.
+	(type_suppression::suppresses_diff): For a type suppression to
+	match a fake flex array conversion, either the size of the type
+	hasn't change or has_size_change must be true and then the type
+	must change from a fake flex array to a real flex array.
+	(read_type_suppression): Parse the new
+	'has_strict_flexible_array_data_member_conversion' property to
+	set the type_suppression::set_has_strict_fam_conversion property.
+	* doc/manuals/libabigail-concepts.rst: Add an entry for the new
+	'has_strict_flexible_array_data_member_conversion' property.
+	* tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-{1,2}.suppr:
+	Add new test suppression files.
+	* tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-{1,2}.txt:
+	Add new test reference output files.
+	* tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v{0,1}.c:
+	Add source code for new binary test input files.
+	* tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v{0,1}.o:
+	Add new binary test input files.
+	* tests/data/Makefile.am: Add the new test files to the source
+	distribution.
+	* tests/test-diff-suppr.cc (in_out_specs): Add the new test input
+	files to this test harness.
+
+Signed-off-by: Dodji Seketeli <dodji@redhat.com>
+Signed-off-by: John Moon <quic_johmoo@quicinc.com>
+---
+ doc/manuals/libabigail-concepts.rst           |  26 +++++-
+ include/abg-comp-filter.h                     |   7 ++
+ include/abg-fwd.h                             |   9 ++
+ include/abg-suppression.h                     |   6 ++
+ src/abg-comp-filter.cc                        |  49 +++++++++++
+ src/abg-ir.cc                                 |  83 +++++++++++++++++-
+ src/abg-suppression-priv.h                    |   6 +-
+ src/abg-suppression.cc                        |  52 +++++++++--
+ tests/data/Makefile.am                        |   8 ++
+ ...xible-array-data-member-conversion-1.suppr |   4 +
+ ...xible-array-data-member-conversion-2.suppr |   3 +
+ ...-array-data-member-conversion-report-1.txt |   4 +
+ ...-array-data-member-conversion-report-2.txt |  14 +++
+ ...flexible-array-data-member-conversion-v0.c |  11 +++
+ ...flexible-array-data-member-conversion-v0.o | Bin 0 -> 2440 bytes
+ ...flexible-array-data-member-conversion-v1.c |  11 +++
+ ...flexible-array-data-member-conversion-v1.o | Bin 0 -> 2432 bytes
+ tests/test-diff-suppr.cc                      |  20 +++++
+ 18 files changed, 303 insertions(+), 10 deletions(-)
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-1.suppr
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-2.suppr
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.c
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.o
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.c
+ create mode 100644 tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.o
+
+diff --git a/doc/manuals/libabigail-concepts.rst b/doc/manuals/libabigail-concepts.rst
+index 28e71684..7b73aaa8 100644
+--- a/doc/manuals/libabigail-concepts.rst
++++ b/doc/manuals/libabigail-concepts.rst
+@@ -619,9 +619,28 @@ names start with the string "private_data_member".
+ 	  {72, end}
+      }
+ 
++.. _suppr_has_strict_flexible_array_data_member_conversion_label:
+ 
+ 
+- .. _suppr_has_size_change_property_label:
++* ``has_strict_flexible_array_data_member_conversion``
++
++ Usage:
++
++   ``has_strict_flexible_array_data_member_conversion`` ``=`` yes | no
++
++ Suppresses change reports involving a type which has a "fake"
++ flexible array member at the end of the struct which is converted
++ to a real flexible array member. This would be a member like
++ ``data[1]`` being converted to ``data[]``.
++
++ Please note that if the size of the type changed, then the type
++ change will *NOT* be suppressed by the evaluation of this property,
++ unless the
++ :ref:`has_size_change<suppr_has_size_change_property_label>` property
++ is present and set to ``yes``.
++
++.. _suppr_has_size_change_property_label:
++
+ 
+ * ``has_size_change``
+ 
+@@ -631,9 +650,10 @@ names start with the string "private_data_member".
+ 
+ 
+ This property is to be used in conjunction with the properties
+-:ref:`has_data_member_inserted_between<suppr_has_data_member_inserted_between_label>`
++:ref:`has_data_member_inserted_between<suppr_has_data_member_inserted_between_label>`,
++:ref:`has_data_members_inserted_between<suppr_has_data_members_inserted_between_label>`,
+ and
+-:ref:`has_data_members_inserted_between<suppr_has_data_members_inserted_between_label>`.
++:ref:`has_strict_flexible_array_data_member_conversion<suppr_has_strict_flexible_array_data_member_conversion_label>`
+ Those properties will not match a type change if the size of the type
+ changes, unless the ``has_size_changes`` property is set to ``yes``.
+ 
+diff --git a/include/abg-comp-filter.h b/include/abg-comp-filter.h
+index cd12b314..8d11fdd2 100644
+--- a/include/abg-comp-filter.h
++++ b/include/abg-comp-filter.h
+@@ -98,6 +98,13 @@ bool
+ is_var_1_dim_unknown_size_array_change(const var_decl_sptr& var1,
+ 				       const var_decl_sptr& var2);
+ 
++bool
++has_strict_fam_conversion(const class_decl_sptr& first,
++			  const class_decl_sptr& second);
++
++bool
++has_strict_fam_conversion(const diff *d);
++
+ struct filter_base;
+ /// Convenience typedef for a shared pointer to filter_base
+ typedef shared_ptr<filter_base> filter_base_sptr;
+diff --git a/include/abg-fwd.h b/include/abg-fwd.h
+index 7d6637b9..de5b72b0 100644
+--- a/include/abg-fwd.h
++++ b/include/abg-fwd.h
+@@ -490,6 +490,15 @@ has_flexible_array_data_member(const class_decl*);
+ var_decl_sptr
+ has_flexible_array_data_member(const class_decl_sptr&);
+ 
++var_decl_sptr
++has_fake_flexible_array_data_member(const class_decl&);
++
++var_decl_sptr
++has_fake_flexible_array_data_member(const class_decl*);
++
++var_decl_sptr
++has_fake_flexible_array_data_member(const class_decl_sptr&);
++
+ bool
+ is_declaration_only_class_or_union_type(const type_base *t,
+ 					bool look_through_decl_only = false);
+diff --git a/include/abg-suppression.h b/include/abg-suppression.h
+index 996600bb..dd0870bc 100644
+--- a/include/abg-suppression.h
++++ b/include/abg-suppression.h
+@@ -336,6 +336,12 @@ public:
+   void
+   set_changed_enumerators_regexp(const vector<regex::regex_t_sptr>&);
+ 
++  bool
++  has_strict_fam_conversion () const;
++
++  void
++  set_has_strict_fam_conversion(bool);
++
+   virtual bool
+   suppresses_diff(const diff* diff) const;
+ 
+diff --git a/src/abg-comp-filter.cc b/src/abg-comp-filter.cc
+index e02e9430..82a819d6 100644
+--- a/src/abg-comp-filter.cc
++++ b/src/abg-comp-filter.cc
+@@ -712,6 +712,55 @@ is_var_1_dim_unknown_size_array_change(const diff* diff)
+   return is_var_1_dim_unknown_size_array_change(f, s);
+ }
+ 
++/// Test if a class with a fake flexible data member got changed into
++/// a class with a real fexible data member.
++///
++/// A fake flexible array data member is a data member that is the
++/// last of the class/struct which type is an array of one element.
++/// This was used before C99 standardized flexible array data members.
++///
++/// @param first the first version of the class to consider.
++///
++/// @param second the second version of the class to consider.
++///
++/// @return true iff @p first has a fake flexible array data member
++/// that got changed into @p second with a real flexible array data
++/// member.
++bool
++has_strict_fam_conversion(const class_decl_sptr& first,
++			  const class_decl_sptr& second)
++{
++  if (has_fake_flexible_array_data_member(first)
++      && has_flexible_array_data_member(second))
++    // A fake flexible array member has been changed into
++    // a real flexible array ...
++    return true;
++  return false;
++}
++
++/// Test if a diff node carries a change from class with a fake
++/// flexible data member into a class with a real fexible data member.
++///
++/// A fake flexible array data member is a data member that is the
++/// last of the class/struct which type is an array of one element.
++/// This was used before C99 standardized flexible array data members.
++///
++/// @param the diff node to consider.
++///
++/// @return true iff @p dif carries a change from class with a fake
++/// flexible data member into a class with a real fexible data member.
++/// member.
++bool
++has_strict_fam_conversion(const diff *dif)
++{
++  const class_diff* d = is_class_diff(dif);
++  if (!d)
++    return false;
++
++  return has_strict_fam_conversion(d->first_class_decl(),
++				   d->second_class_decl());
++}
++
+ /// Test if a class_diff node has static members added or removed.
+ ///
+ /// @param diff the diff node to consider.
+diff --git a/src/abg-ir.cc b/src/abg-ir.cc
+index 5a569c36..78a4dfe0 100644
+--- a/src/abg-ir.cc
++++ b/src/abg-ir.cc
+@@ -10840,6 +10840,88 @@ var_decl_sptr
+ has_flexible_array_data_member(const class_decl_sptr& klass)
+ {return has_flexible_array_data_member(klass.get());}
+ 
++/// Test if the last data member of a class is an array with
++/// one element.
++///
++/// An array with one element is a way to mimic the flexible data
++/// member idiom that was later standardized in C99.
++///
++/// To learn more about the flexible data member idiom, please
++/// consider reading :
++/// https://en.wikipedia.org/wiki/Flexible_array_member.
++///
++/// The various ways of representing that idiom pre-standardization
++/// are presented in this article:
++/// https://developers.redhat.com/articles/2022/09/29/benefits-limitations-flexible-array-members#
++///
++/// @param klass the class to consider.
++///
++/// @return the data member which type is a fake flexible array, if
++/// any, or nil.
++var_decl_sptr
++has_fake_flexible_array_data_member(const class_decl& klass)
++{
++  var_decl_sptr nil;
++  const class_or_union::data_members& dms = klass.get_data_members();
++  if (dms.empty())
++    return nil;
++
++  if (array_type_def_sptr array = is_array_type(dms.back()->get_type()))
++    {// The type of the last data member is an array.
++      if (array->get_subranges().size() == 1
++	  && array->get_subranges()[0]->get_length() == 1)
++	// The array has a size of one. We are thus looking at a
++	// "fake" flexible array data member.  Let's return it.
++	return dms.back();
++    }
++
++  return nil;
++}
++
++/// Test if the last data member of a class is an array with
++/// one element.
++///
++/// An array with one element is a way to mimic the flexible data
++/// member idiom that was later standardized in C99.
++///
++/// To learn more about the flexible data member idiom, please
++/// consider reading :
++/// https://en.wikipedia.org/wiki/Flexible_array_member.
++///
++/// The various ways of representing that idiom pre-standardization
++/// are presented in this article:
++/// https://developers.redhat.com/articles/2022/09/29/benefits-limitations-flexible-array-members#
++///
++/// @param klass the class to consider.
++///
++/// @return the data member which type is a fake flexible array, if
++/// any, or nil.
++var_decl_sptr
++has_fake_flexible_array_data_member(const class_decl* klass)
++{return has_fake_flexible_array_data_member(*klass);}
++
++/// Test if the last data member of a class is an array with
++/// one element.
++///
++/// An array with one element is a way to mimic the flexible data
++/// member idiom that was later standardized in C99.
++///
++/// To learn more about the flexible data member idiom, please
++/// consider reading :
++/// https://en.wikipedia.org/wiki/Flexible_array_member.
++///
++/// The various ways of representing that idiom pre-standardization
++/// are presented in this article:
++/// https://developers.redhat.com/articles/2022/09/29/benefits-limitations-flexible-array-members#
++///
++/// @param klass the class to consider.
++///
++/// @return the data member which type is a fake flexible array, if
++/// any, or nil.
++var_decl_sptr
++has_fake_flexible_array_data_member(const class_decl_sptr& klass)
++{return has_fake_flexible_array_data_member(klass.get());}
++
+ /// Test wheter a type is a declaration-only class.
+ ///
+ /// @param t the type to considier.
+@@ -10862,7 +10944,6 @@ is_declaration_only_class_or_union_type(const type_base *t,
+   return false;
+ }
+ 
+-
+ /// Test wheter a type is a declaration-only class.
+ ///
+ /// @param t the type to considier.
+diff --git a/src/abg-suppression-priv.h b/src/abg-suppression-priv.h
+index 351c5965..e4d65df8 100644
+--- a/src/abg-suppression-priv.h
++++ b/src/abg-suppression-priv.h
+@@ -586,6 +586,9 @@ class type_suppression::priv
+   mutable regex::regex_t_sptr		source_location_to_keep_regex_;
+   mutable vector<string>		changed_enumerator_names_;
+   mutable vector<regex::regex_t_sptr>	changed_enumerators_regexp_;
++  // Whether the "has_strict_flexible_array_data_member_conversion"
++  // property was set.
++  bool					has_strict_fam_conv_;
+ 
+   priv();
+ 
+@@ -602,7 +605,8 @@ public:
+       type_kind_(type_kind),
+       consider_reach_kind_(consider_reach_kind),
+       reach_kind_(reach_kind),
+-      has_size_change_(false)
++      has_size_change_(false),
++      has_strict_fam_conv_(false)
+   {}
+ 
+   /// Get the regular expression object associated to the 'type_name_regex'
+diff --git a/src/abg-suppression.cc b/src/abg-suppression.cc
+index 326d003e..0fb6d057 100644
+--- a/src/abg-suppression.cc
++++ b/src/abg-suppression.cc
+@@ -808,6 +808,21 @@ void
+ type_suppression::set_changed_enumerators_regexp(const vector<regex::regex_t_sptr>& n)
+ {priv_->changed_enumerators_regexp_ = n;}
+ 
++/// Getter of the "has_string_fam_conversion" property.
++///
++/// @return the value of the "has_string_fam_conversion" property.
++bool
++type_suppression::has_strict_fam_conversion () const
++{return priv_->has_strict_fam_conv_;}
++
++/// Setter of the "has_string_fam_conversion" property.
++///
++/// @param f the new value of the "has_string_fam_conversion"
++/// property.
++void
++type_suppression::set_has_strict_fam_conversion(bool f)
++{priv_->has_strict_fam_conv_ = f;}
++
+ /// Evaluate this suppression specification on a given diff node and
+ /// say if the diff node should be suppressed or not.
+ ///
+@@ -967,6 +982,11 @@ type_suppression::suppresses_diff(const diff* diff) const
+   const class_diff* klass_diff = dynamic_cast<const class_diff*>(d);
+   if (klass_diff)
+     {
++      const class_decl_sptr& first_class =
++	klass_diff->first_class_decl();
++      const class_decl_sptr& second_class =
++	klass_diff->second_class_decl();
++
+       // We are looking at a class diff ...
+       if (!get_data_member_insertion_ranges().empty())
+ 	{
+@@ -981,9 +1001,6 @@ type_suppression::suppresses_diff(const diff* diff) const
+ 	      // that suppression applies to types that have size
+ 	      // change.
+ 
+-	      const class_decl_sptr& first_type_decl =
+-		klass_diff->first_class_decl();
+-
+ 	      if (klass_diff->inserted_data_members().empty()
+ 		  && klass_diff->changed_data_members().empty())
+ 		// So there is a has_data_member_inserted_* clause,
+@@ -1001,7 +1018,7 @@ type_suppression::suppresses_diff(const diff* diff) const
+ 		  for (const auto& range : get_data_member_insertion_ranges())
+ 		    if (is_data_member_offset_in_range(is_var_decl(member),
+ 						       range,
+-						       first_type_decl.get()))
++						       first_class.get()))
+ 		      matched = true;
+ 
+ 		  if (!matched)
+@@ -1017,7 +1034,7 @@ type_suppression::suppresses_diff(const diff* diff) const
+ 
+ 		  for (const auto& range : get_data_member_insertion_ranges())
+ 		    if (is_data_member_offset_in_range(member, range,
+-						       first_type_decl.get()))
++						       first_class.get()))
+ 		      matched = true;
+ 
+ 		  if (!matched)
+@@ -1027,6 +1044,20 @@ type_suppression::suppresses_diff(const diff* diff) const
+ 	  else
+ 	    return false;
+ 	}
++
++      // Support for the
++      // "has_strict_flexible_array_data_member_conversion = true"
++      // clause.
++      if (has_strict_fam_conversion())
++	{
++	  // Let's detect if the first class of the diff has a fake
++	  // flexible array data member that got turned into a real
++	  // flexible array data member.
++	  if (!((get_has_size_change() || ((first_class->get_size_in_bits()
++					    == second_class->get_size_in_bits())))
++		&& filtering::has_strict_fam_conversion(klass_diff)))
++	    return false;
++	}
+     }
+ 
+   const enum_diff* enum_dif = dynamic_cast<const enum_diff*>(d);
+@@ -2321,6 +2352,14 @@ read_type_suppression(const ini::config::section& section)
+       }
+     }
+ 
++  // Support "has_strict_flexible_array_data_member_conversion"
++  ini::simple_property_sptr has_strict_fam_conv =
++    is_simple_property
++    (section.find_property("has_strict_flexible_array_data_member_conversion"));
++  string has_strict_fam_conv_str = has_strict_fam_conv
++    ? has_strict_fam_conv->get_value()->as_string()
++    : "";
++
+   if (section.get_name() == "suppress_type")
+     result.reset(new type_suppression(label_str, name_regex_str, name_str));
+   else if (section.get_name() == "allow_type")
+@@ -2388,6 +2427,9 @@ read_type_suppression(const ini::config::section& section)
+       && !changed_enumerators_regexp.empty())
+     result->set_changed_enumerators_regexp(changed_enumerators_regexp);
+ 
++  if (has_strict_fam_conv_str == "yes" || has_strict_fam_conv_str == "true")
++    result->set_has_strict_fam_conversion(true);
++
+   return result;
+ }
+ 
+diff --git a/tests/data/Makefile.am b/tests/data/Makefile.am
+index 15c685e3..8af6a2c4 100644
+--- a/tests/data/Makefile.am
++++ b/tests/data/Makefile.am
+@@ -1934,6 +1934,14 @@ test-diff-suppr/test-has-data-member-inserted-at-1-v0.o \
+ test-diff-suppr/test-has-data-member-inserted-at-1-v1.c \
+ test-diff-suppr/test-has-data-member-inserted-at-1-v1.o \
+ test-diff-suppr/test-has-data-member-inserted-at-1.1.suppr \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-1.suppr \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-2.suppr \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.c \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.c \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.o \
++test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.o \
+ \
+ test-diff-dwarf-abixml/test0-pr19026-libvtkIOSQL-6.1.so.1 \
+ test-diff-dwarf-abixml/test0-pr19026-libvtkIOSQL-6.1.so.1.abi \
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-1.suppr b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-1.suppr
+new file mode 100644
+index 00000000..5cb8d880
+--- /dev/null
++++ b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-1.suppr
+@@ -0,0 +1,4 @@
++[suppress_type]
++  type_kind = struct
++  has_size_change = true
++  has_strict_flexible_array_data_member_conversion = true
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-2.suppr b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-2.suppr
+new file mode 100644
+index 00000000..384409d0
+--- /dev/null
++++ b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-2.suppr
+@@ -0,0 +1,3 @@
++[suppress_type]
++  type_kind = struct
++  has_strict_flexible_array_data_member_conversion = true
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt
+new file mode 100644
+index 00000000..b4ea5bf1
+--- /dev/null
++++ b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt
+@@ -0,0 +1,4 @@
++Functions changes summary: 0 Removed, 0 Changed, 0 Added function
++Variables changes summary: 0 Removed, 0 Changed, 0 Added variable
++Unreachable types summary: 0 removed, 0 changed (1 filtered out), 0 added type
++
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt
+new file mode 100644
+index 00000000..2352dd4e
+--- /dev/null
++++ b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt
+@@ -0,0 +1,14 @@
++Functions changes summary: 0 Removed, 0 Changed, 0 Added function
++Variables changes summary: 0 Removed, 0 Changed, 0 Added variable
++Unreachable types summary: 0 removed, 1 changed, 0 added type
++
++1 changed type unreachable from any public interface:
++
++  [C] 'struct foo' changed:
++    type size changed from 64 to 32 (in bits)
++    1 data member change:
++      type of 'int flex[1]' changed:
++        type name changed from 'int[1]' to 'int[]'
++        array type size changed from 32 to 'unknown'
++        array type subrange 1 changed length from 1 to 'unknown'
++
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.c b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.c
+new file mode 100644
+index 00000000..1397cd52
+--- /dev/null
++++ b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.c
+@@ -0,0 +1,11 @@
++/*
++ * Compile this with:
++ *   gcc -g -c test-has-strict-flexible-array-data-member-conversion-v0.c
++ */
++struct foo
++{
++  int x;
++  int flex[1];
++};
++
++struct foo S;
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.o b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.o
+new file mode 100644
+index 0000000000000000000000000000000000000000..8d0a755d353d580e6afb96dc55a021322caf5a93
+GIT binary patch
+literal 2440
+zcmbtV!EVz)5FN)&<6;_GMF^^b<Vqk4!cGFERE3sE6_g5uKvjhVhssViiD_a-wo}>*
+zJ;IGM=UzDT1$+hP{sNqkIFy<7Zt5&SNOUCc%)FV|ncbaTA3S{eD5q&4NrP25(Ig7+
+zA%7y*xLAWJI0pgBV_Y|Q*jX-%A=eB;FtmIPb$t)C0tu<RW~_5DKbH4{1jfno62Afs
+z0EST@Hn9nsd6@*AR8HEocC}bC_2O)C>H<Knr0IrfE}QpEt%PYNK{rU*C@q<o3)SL@
+zn!f_3xoYYLz__MulqjMw2OFg_`WnJm#B>XTSsu*fE@IwG_~m$hj2%H#b`D<PsA<27
+zlQ{BC#XZp=VR2%&-Pn$k$gd}Mv%~g$ufuFNirjs>;U=!#WnGU&c0CMsSrq$WVDDC(
+zI!{FIr<r5@*_O3dty*`TJ5I&2yGcJ_D=ii<ECy9Ks<&76mKN>B1<P((b~8@g`i|X;
+z!i3e6Fruo%pamTqtbP#tt$;NwI<#^>j&7CTgzat^mfwcaPTX_rtlaTE*YjJh-zn3|
+z<1#Ifi+00rHto3I>qP+TYirBa{Fc`bl73p7eY?-K>bvTaQ(3s4q9Zmt15wkB!S~|~
+zG!XTXos2yqPIBNV1RX7-NEaQh+H@FKA+GDdoA(c!4ikT11n6+)FZj@H8u;jd-Kx-i
+z)TiOcvFuLCPt!P?IHz18RVZajEh{6OR#n4~XgXzlMTE;|<Gg}@68cOAAJmN4LI%(7
+z+A9TrFLYmU>IYdHL9%A5Q`SN_IPrcraXsWol=8Ne61JCsLtP7w7sud4tm8Tj=Ji|K
+ze$Wij#%0&@BDOnZb|W`vF$_sPI)1>UjI)DN54&B4SH}tPb~$)6@pj>D;}xB1n8j#X
+zyIilFtR@A8lW&&hP$5jc0ky1CMpommp^eV(f8(ndtIkR3YBV6>gE2&^?@hGQf2cO(
+z1z@E=C-^GxN#q2{UZc02XazrYPQt&?fV7*k!KnH^M~jM)^Sl5pQZl6aK0({4`j15Y
+zvQDa>UKh3gZN$_$5rW48d`(J*R9|XA!YUab5)XyrHwBmRlGFZ-ir-IvnsDPE@dqMa
+zaf3q<ui`SV#7Q6J`dNTWA^?Bx{C!aOkKP!ycWLe;0j`pgAvHg}d!yoiiu3!Ji6v2u
+F{|#4^;2Zz|
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.c b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.c
+new file mode 100644
+index 00000000..95386d41
+--- /dev/null
++++ b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.c
+@@ -0,0 +1,11 @@
++/*
++ * Compile this with:
++ *   gcc -g -c test-has-strict-flexible-array-data-member-conversion-v1.c
++ */
++struct foo
++{
++  int x;
++  int flex[];
++};
++
++struct foo S;
+diff --git a/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.o b/tests/data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.o
+new file mode 100644
+index 0000000000000000000000000000000000000000..da8d4137ad4639af460b144ceb464a021fb843ce
+GIT binary patch
+literal 2432
+zcmbtVUr!T35TEO{w0Ke>jS+$-M<Vf0yerj;4GK0PNQlH}2pVG|xofxWNqblCt`%Oy
+zZ{V|Ud<DOOpTh7l)K?#H=5Dtf%NY}yq&qXenc11$o7o<$Z9d5;3J6kQ1x_@90({Dy
+z$n{99!z5gS9?IEBFGOJ%BbhImmghlM$<<L;_dv;$5W6dd^+?QRbB-Ir7+GH8FHZ{;
+z3VCAVTcBvyNKi?QNSRXRizQ7h&K4)H0AxyvTF|s5?V+ZWFv|p}1yVLjH4RgtT0Bv6
+z*Fn=(G_?RQrYIXFipbBw2C@P-6){<Lw8!I_%rs`bioZ;h9V1id6=E59fvckYE>7SY
+z-6&p&0wD`Rqhkd|5c*CdG+JG@=h$6lSiW!V8%-;;j2`RR%r_dIJ7j*~c&;(5n2jhA
+zxx@OiZGE*;(I1%i%>~`)g#(u@x0%auM^r7p(OKTBEgFke-DvAZD+sN|uF?0skTpWj
+zr_`R?hAuApzzv+X%bGe}`#Fj$4+8&g`JLD4d0zR0=kEr6tHH`$$F^*zZ8_aCZ61{A
+zfRSi4omR^T2K~Mdu)eywq~F}O2W~isk7e8&L|WxzrDiTvZ^dZJWycUTTNZvEr#Yyp
+z9gNMvKcXC?q9u(~-r2HEg)te5bQPkmJ!4a0{0v5b3K#x@pPHhPj|$k*5<NnF3Vt2O
+zGbm;e!E=1tEesbYqzZ+MB8bWer&Eb%VTz1M0)HE;aG7&~f8qK}0#6QAHGwB@?X`q&
+za=pVj^@FI5AW<{r6*UqLX0YE2EgO00$Gjt?knM$FQp1922LYHq>sn@$*@O0u<F-7s
+zMY3hvJ{z7gTfXJC8HU6jUB_iY#@)eec)cFOfiqp4NfYN8XA);Ls_0zHEJoAW#d*bM
+zbs<Qce3LYX3SsgD)RRsLS&qMfHu`@58(+a#c~44Lrv>SK%tov1dj~Dl`}L7WEKKu(
+z_{Q-G<OGRcqi3CH8GrJggny+4DU8`@m3^P1MaIZ^o`X6m36g!EqAjidBVNC#lj^6}
+zMXrAbF?mmfV2y)sNJ)_FOD#y)Lc)i{L+<!p!bQB`L$s&G599w!xc!g#10FBA!6A>A
+zagkTxq^G%x_!<wu|Mlp7knfM)7`b<8?;{Sbkdh!dKfQZt@jv+Y`<#d+QI7uuX6xT{
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/test-diff-suppr.cc b/tests/test-diff-suppr.cc
+index 8c9ad070..119be55b 100644
+--- a/tests/test-diff-suppr.cc
++++ b/tests/test-diff-suppr.cc
+@@ -2376,6 +2376,26 @@ InOutSpec in_out_specs[] =
+     "data/test-diff-suppr/test-has-data-member-inserted-at-2-report.3.txt",
+     "output/test-diff-suppr/test-has-data-member-inserted-at-2-report.3.txt"
+   },
++  {
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.o",
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.o",
++    "",
++    "",
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-1.suppr",
++    "--drop-private-types --no-default-suppression --non-reachable-types",
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt",
++    "output/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-1.txt",
++  },
++  {
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v0.o",
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-v1.o",
++    "",
++    "",
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-2.suppr",
++    "--drop-private-types --no-default-suppression --non-reachable-types",
++    "data/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt",
++    "output/test-diff-suppr/test-has-strict-flexible-array-data-member-conversion-report-2.txt",
++  },
+   // This should be the last entry
+   {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL}
+ };
+-- 
+2.42.0
+
