@@ -2,8 +2,8 @@
 
 Summary:        Routing daemon
 Name:           frr
-Version:        8.5.3
-Release:        2%{?dist}
+Version:        9.1
+Release:        1%{?dist}
 License:        GPL-2.0-or-later
 Vendor:         Microsoft Corporation
 Distribution:   Azure Linux
@@ -197,6 +197,9 @@ rm tests/lib/*grpc*
 %{_sysusersdir}/%{name}.conf
 
 %changelog
+* Tue Feb 13 2024 Vince Perri <viperri@microsoft.com> - 9.1-1
+- Upgrade to 9.1
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 8.5.3-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
