@@ -1,8 +1,8 @@
 %define with_desktop_subpackages 0
 Summary:        Delivery framework for general Input Method configuration
 Name:           imsettings
-Version:        1.8.2
-Release:        3%{?dist}
+Version:        1.8.3
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Azure Linux
@@ -314,6 +314,9 @@ fi
 
 
 %changelog
+* Tue Feb 13 2024 Vince Perri <viperri@microsoft.com> - 1.8.3-1
+- Upgrade to 1.8.3
+
 * Wed Dec 08 2021 Thomas Crain <thcrain@microsoft.com> - 1.8.2-3
 - License verified
 - Lint spec
