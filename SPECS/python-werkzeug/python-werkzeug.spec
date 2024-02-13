@@ -13,7 +13,7 @@ URL:            https://github.com/pallets/werkzeug
 Source0:        https://github.com/pallets/werkzeug/archive/%{version}.tar.gz#/werkzeug-%{version}.tar.gz
 # Fixes PYTHONPATH handling in tests
 # Upstream: https://github.com/pallets/werkzeug/pull/2172
-Patch0:         preserve-any-existing-PYTHONPATH-in-tests.patch
+# Patch0:         preserve-any-existing-PYTHONPATH-in-tests.patch
 BuildArch:      noarch
 
 %description
