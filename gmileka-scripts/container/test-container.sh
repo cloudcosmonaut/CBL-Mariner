@@ -27,12 +27,20 @@ mkdir -p $outputDir
 #   $containerFullPath
 
 
-#  --privileged=true \
-
-# --cap-add SYS_ADMIN \ : if only SYS_ADMIN, cannot create a loop device
+# --privileged=true \
+#   if this is removed, error is "cannot find an unused loop device"
 #
 # --cap-add ALL
 #   removing this seems to cause the second image connection to fail.
+#   even if replace with --cap-add SYS_ADMIN, still fails when it comes to the
+#   second image connection
+#
+# --cap-add SYS_ADMIN
+#   add/removing this has no effect.
+#   if "cap-add ALL" and "priviledged=true" are missing, this results in "can't
+#   find unused loop device"
+#   if "cap-add ALL" is missing, this results in "can't
+#   find unused loop device"
 #
 # --device=/dev/loop7:/dev/loop7 \
 #   removing this seems to have no effect. This is good.

@@ -782,8 +782,8 @@ func GetDiskPartitions(diskDevPath string) ([]PartitionInfo, error) {
 		return nil, fmt.Errorf("failed to list disk (%s) partitions:\n%w", diskDevPath, err)
 	}
 
-	logger.Log.Infof("------- GetDiskPartitions() ---- Sleeping for 5 seconds...")
-	time.Sleep(5 * time.Second)
+	logger.Log.Infof("------- GetDiskPartitions() ---- Sleeping for 15 seconds...")
+	time.Sleep(15 * time.Second)
 
 	// Read the disk's partitions.
 	jsonString, _, err := shell.Execute("lsblk", diskDevPath, "--output", "NAME,PATH,PARTTYPE,FSTYPE,UUID,MOUNTPOINT,PARTUUID,PARTLABEL,TYPE", "--json", "--list")
