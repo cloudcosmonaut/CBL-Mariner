@@ -6,7 +6,6 @@ package imagecustomizerlib
 import (
 	"fmt"
 
-	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/safechroot"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/safeloopback"
 )
@@ -40,8 +39,6 @@ func (c *ImageConnection) ConnectChroot(rootDir string, isExistingDir bool, extr
 	if c.chroot != nil {
 		return fmt.Errorf("chroot already connected")
 	}
-
-	logger.Log.Infof("ConnectChroot() - 1 - rootDir=%s", rootDir)
 
 	chroot := safechroot.NewChroot(rootDir, isExistingDir)
 	err := chroot.Initialize("", extraDirectories, extraMountPoints, includeDefaultMounts)

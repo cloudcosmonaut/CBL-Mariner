@@ -782,7 +782,7 @@ func GetDiskPartitions(diskDevPath string) ([]PartitionInfo, error) {
 		return nil, fmt.Errorf("failed to list disk (%s) partitions:\n%w", diskDevPath, err)
 	}
 
-	logger.Log.Infof("------- Sleeping for 20 seconds...")
+	logger.Log.Infof("------- GetDiskPartitions() ---- Sleeping for 5 seconds...")
 	time.Sleep(5 * time.Second)
 
 	// Read the disk's partitions.
