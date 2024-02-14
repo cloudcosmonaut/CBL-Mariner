@@ -30,6 +30,3 @@ pushd $containerStagingFolder
 docker build -f $dockerFile . -t $containerFullPath
 
 popd
-
-# Test:
-# docker run -it --rm xyz.azurecr.io/mic-sio/v0.1 bash

@@ -30,14 +30,18 @@ mkdir -p $outputDir
 #  --privileged=true \
 
 # --cap-add SYS_ADMIN \ : if only SYS_ADMIN, cannot create a loop device
+#
+# --cap-add ALL
+#   removing this seems to cause the second image connection to fail.
+#
+# --device=/dev/loop7:/dev/loop7 \
+#   removing this seems to have no effect. This is good.
+#
 
 docker run -it --rm \
   --privileged=true \
   --cap-add ALL \
-  --device=/dev/loop7:/dev/loop7 \
   -v $inputDir:/input:z \
   -v $outputDir:/output:z \
   $containerFullPath \
   bash
-
-
