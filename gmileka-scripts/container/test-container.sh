@@ -20,7 +20,24 @@ containerFullPath=$containerRegistery/$containerName/$containerTag
 sudo rm -rf $outputDir
 mkdir -p $outputDir
 
-docker run --rm \
+# docker run --rm \
+#   --privileged=true \
+#   -v $inputDir:/input:z \
+#   -v $outputDir:/output:z \
+#   $containerFullPath
+
+
+#  --privileged=true \
+
+# --cap-add SYS_ADMIN \ : if only SYS_ADMIN, cannot create a loop device
+
+docker run -it --rm \
+  --privileged=true \
+  --cap-add ALL \
+  --device=/dev/loop7:/dev/loop7 \
   -v $inputDir:/input:z \
   -v $outputDir:/output:z \
-  $containerFullPath
+  $containerFullPath \
+  bash
+
+
